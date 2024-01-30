@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://awseb-e-mi47brpxkn-stack-awsebrdsdatabase-6cnfnlv3s817.cxaq4gs2wvsw.ap-northeast-2.rds.amazonaws.com:3306/todo?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://awseb-e-p8f9pfsv3q-stack-awsebrdsdatabase-bcbtm1zuknzi.cxaq4gs2wvsw.ap-northeast-2.rds.amazonaws.com:3306/todo?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: todo
     password: 12345678
   jpa:
