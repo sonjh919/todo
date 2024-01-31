@@ -2,6 +2,7 @@ package com.sparta.todo.user.controller;
 
 import com.sparta.todo.user.dto.SignupRequestDto;
 import com.sparta.todo.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user/test")
+    @GetMapping("/v1/user/test")
+    @Operation(summary = "테스트용 api", description = "테스트용 api")
     public String test(){
         return "test successed";
     }

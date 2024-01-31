@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 5000
 
 spring:
   datasource:
@@ -7,3 +7,15 @@ spring:
     url: jdbc:mysql://localhost:3306/{database_name}
     username: {database_username}
     password: {database_password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+jwt:
+  secret:
+    key: {secret_key}
