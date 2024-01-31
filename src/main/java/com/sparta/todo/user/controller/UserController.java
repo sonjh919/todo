@@ -12,7 +12,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -23,16 +22,18 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/v1/user/test")
-    @Operation(summary = "테스트용 api", description = "테스트용 api")
-    public String test(){
-        return "test successed";
+    @Operation(summary = "테스트 api")
+    public String test() {
+        return "test succeed";
     }
 
-    @PostMapping("/user/signup")
-    public String signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+    @PostMapping("/v1/user/signup")
+    @Operation(summary = "회원가입")
+    public String signup(@RequestBody @Valid SignupRequestDto requestDto,
+        BindingResult bindingResult) {
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
+        if (fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
@@ -41,7 +42,12 @@ public class UserController {
 
         userService.signup(requestDto);
 
-        return "good";
+        return "회원가입 완료";
+    }
+
+    @PostMapping("/v1/user/login")
+    @Operation(summary = "로그인")
+    public void login() {
     }
 
 }

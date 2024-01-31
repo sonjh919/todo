@@ -18,6 +18,7 @@ import lombok.Setter;
 @Table(name = "TB_USER")
 @NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
