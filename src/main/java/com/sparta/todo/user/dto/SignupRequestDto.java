@@ -12,7 +12,4 @@ public class SignupRequestDto {
     private String username;
     @NotBlank
     private String password;
-
-    private boolean admin = false;
-
 }
