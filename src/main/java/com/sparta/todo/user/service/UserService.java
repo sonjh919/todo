@@ -40,8 +40,6 @@ public class UserService {
         String userName = requestDto.getUserName();
         String password = requestDto.getPassword();
 
-        System.out.println(userName);
-
         User user = userRepository.findByUserName(userName).orElseThrow(
             () -> new LoginException("회원을 찾을 수 없습니다.")
         );
