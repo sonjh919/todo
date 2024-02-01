@@ -24,19 +24,14 @@ public class User {
     private Long userId;
 
     @Column(nullable = false, unique = true, name = "USER_NAME")
-    private String username;
+    private String userName;
 
     @Column(nullable = false, unique = true, name = "PASSWORD")
     private String password;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
-
-    public User(String username, String password, UserRoleEnum role) {
-        this.username = username;
+    public User(String userName, String password) {
+        this.userName = userName;
         this.password = password;
-        this.role = role;
     }
 
 
