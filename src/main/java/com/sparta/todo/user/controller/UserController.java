@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
+@Slf4j()
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -25,19 +25,21 @@ public class UserController {
     @PostMapping("/v1/user/signup")
     @Operation(summary = "회원가입")
     public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
+        log.info("회원 가입 API");
         return ResponseEntity.ok().body(new ResponseDto("회원가입 성공", userService.signup(requestDto)));
     }
 
     @GetMapping("/v1/user/test")
     @Operation(summary = "테스트 api")
     public String test() {
+        log.info("테스트 API");
         return "test succeed";
     }
 
     @PostMapping("/v1/user/login")
     @Operation(summary = "로그인")
     public ResponseEntity<ResponseDto> login(@RequestBody LoginRequestDto requestDto) {
-        System.out.println(requestDto.getUserName());
+        log.info("로그인 API");
         return ResponseEntity.ok()
             .header(HttpHeaders.AUTHORIZATION, userService.login(requestDto))
             .body(new ResponseDto("로그인 성공"));
