@@ -1,12 +1,16 @@
 package com.sparta.todo.todo.entity;
 
 import com.sparta.todo.todo.dto.TodoRequestDto;
+import com.sparta.todo.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -36,9 +40,6 @@ public class Todo {
     @Column(name = "CONTENT", length = 1024)
     private String content;
 
-    @Column(name = "AUTHOR")
-    private String author;
-
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATE_CREATED", updatable = false)
@@ -50,12 +51,16 @@ public class Todo {
     @Column(name = "IS_PRIVATE")
     private boolean isPrivate;
 
-    public Todo(TodoRequestDto requestDto, String author) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Todo(TodoRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.author = author;
         this.isCompleted = false;
         this.isPrivate = false;
+        this.user = user;
     }
 
 }

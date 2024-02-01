@@ -1,5 +1,6 @@
 package com.sparta.todo.user.entity;
 
+import com.sparta.todo.todo.entity.Todo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,7 +8,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,10 +33,12 @@ public class User {
     @Column(nullable = false, unique = true, name = "PASSWORD")
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Todo> todos = new ArrayList<>();
+
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
-
 
 }

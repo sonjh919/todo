@@ -46,5 +46,14 @@ public class TodoController {
         return ResponseEntity.ok().body(new ResponseDto("할일카드 조회 성공", todoService.getTodoById(id)));
     }
 
+    @GetMapping("v1/todos")
+    @Operation(summary = "할일카드 목록 조회")
+    public ResponseEntity<ResponseDto> getTodos(){
+        return ResponseEntity.ok().body(new ResponseDto("할일카드 목록 조회 성공", todoService.getTodos()));
+    }
+
+
+
+
 
 }
