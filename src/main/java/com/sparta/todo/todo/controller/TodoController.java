@@ -89,6 +89,7 @@ public class TodoController {
     }
 
     @DeleteMapping("v1/todos/{id}")
+    @Operation(summary = "할일카드 삭제")
     public ResponseEntity<ResponseDto> deleteTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long id
