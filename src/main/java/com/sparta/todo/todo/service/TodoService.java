@@ -35,8 +35,6 @@ public class TodoService {
         return new TodoResponseDto(todoRepository.save(todo));
     }
 
-    ;
-
     public GetTodoResponseDto getTodoById(Long id) {
         Todo todo = findTodo(id);
         return new GetTodoResponseDto(todo);
@@ -56,9 +54,7 @@ public class TodoService {
     @Transactional
     public TodoResponseDto updateTodo(String accessToken, TodoRequestDto requestDto, Long id,
         Boolean isCompleted, Boolean isPrivate) {
-        String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = userRepository.findByUserName(author).orElseThrow();
-        Todo todo = getTodoByAuthor(user, id);
+        Todo todo = getTodoByTokenAndId(accessToken, id);
 
         if (isCompleted != null) {
             todo.setCompleted(isCompleted);
@@ -71,13 +67,25 @@ public class TodoService {
         return new TodoResponseDto(todo);
     }
 
+    @Transactional
+    public void deleteTodo(String accessToken, Long id) {
+        Todo todo = getTodoByTokenAndId(accessToken, id);
+
+        todoRepository.delete(todo);
+    }
+
+    private Todo getTodoByTokenAndId(String accessToken, Long id) {
+        String author = jwtUtil.getUserInfoFromToken(accessToken);
+        User user = userRepository.findByUserName(author).orElseThrow();
+        return getTodoByAuthor(user, id);
+    }
+
     private Todo getTodoByAuthor(User user, Long id) {
         return user.getTodos().stream()
             .filter(todos -> todos.getTodoId().equals(id))
             .findFirst()
             .orElseThrow(() -> new NoSuchElementException("작성자만 삭제/수정할 수 있습니다."));
     }
-
 
     private Todo findTodo(Long id) {
         return todoRepository.findById(id).orElseThrow(() ->
@@ -96,5 +104,4 @@ public class TodoService {
             })
             .toList();
     }
-
 }

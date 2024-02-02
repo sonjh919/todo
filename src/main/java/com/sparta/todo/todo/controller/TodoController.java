@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import com.sparta.todo.common.ResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
 import com.sparta.todo.todo.dto.TodoResponseDto;
+import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +86,18 @@ public class TodoController {
 
         return ResponseEntity.created(createdUri)
             .body(new ResponseDto("할일카드 수정 성공", todoResponseDto));
+    }
+
+    @DeleteMapping("v1/todos/{id}")
+    public ResponseEntity<ResponseDto> deleteTodo(
+        @RequestHeader(value = "Authorization") String accessToken,
+        @PathVariable Long id
+    ){
+        log.info("할일카드 삭제 API");
+
+        todoService.deleteTodo(accessToken, id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
