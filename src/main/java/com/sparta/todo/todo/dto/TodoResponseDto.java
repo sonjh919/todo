@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateTodoResponseDto {
+public class TodoResponseDto {
 
     private Long todoId;
     private String title;
@@ -17,7 +17,7 @@ public class CreateTodoResponseDto {
     private boolean isCompleted;
     private boolean isPrivate;
 
-    public CreateTodoResponseDto(Todo todo) {
+    public TodoResponseDto(Todo todo) {
         this.todoId = todo.getTodoId();
         this.title = todo.getTitle();
         this.content = todo.getContent();

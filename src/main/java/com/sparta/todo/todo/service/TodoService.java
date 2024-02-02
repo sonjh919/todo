@@ -2,7 +2,7 @@ package com.sparta.todo.todo.service;
 
 
 import com.sparta.todo.jwt.JwtUtil;
-import com.sparta.todo.todo.dto.CreateTodoResponseDto;
+import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.dto.GetTodoListResponseDto;
 import com.sparta.todo.todo.dto.GetTodoResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
@@ -12,6 +12,7 @@ import com.sparta.todo.user.entity.User;
 import com.sparta.todo.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +27,15 @@ public class TodoService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public CreateTodoResponseDto createTodo(String accessToken, TodoRequestDto requestDto){
+    public TodoResponseDto createTodo(String accessToken, TodoRequestDto requestDto) {
         String author = jwtUtil.getUserInfoFromToken(accessToken);
         User user = userRepository.findByUserName(author).orElseThrow();
         Todo todo = new Todo(requestDto, user);
 
-        return new CreateTodoResponseDto(todoRepository.save(todo));
-    };
+        return new TodoResponseDto(todoRepository.save(todo));
+    }
+
+    ;
 
     public GetTodoResponseDto getTodoById(Long id) {
         Todo todo = findTodo(id);
@@ -41,12 +44,38 @@ public class TodoService {
 
     public List<GetTodoListResponseDto> getTodos(String title) {
         List<User> users = userRepository.findAll();
-        List<GetTodoListResponseDto> todoList = users.stream().map(GetTodoListResponseDto::new).toList();
+        List<GetTodoListResponseDto> todoList = users.stream().map(GetTodoListResponseDto::new)
+            .toList();
 
-        if(title==null){
+        if (title == null) {
             return todoList;
         }
         return getTodosByTitle(todoList, title);
+    }
+
+    @Transactional
+    public TodoResponseDto updateTodo(String accessToken, TodoRequestDto requestDto, Long id,
+        Boolean isCompleted, Boolean isPrivate) {
+        String author = jwtUtil.getUserInfoFromToken(accessToken);
+        User user = userRepository.findByUserName(author).orElseThrow();
+        Todo todo = getTodoByAuthor(user, id);
+
+        if (isCompleted != null) {
+            todo.setCompleted(isCompleted);
+        }
+        if (isPrivate != null) {
+            todo.setPrivate(isPrivate);
+        }
+
+        todo.update(requestDto);
+        return new TodoResponseDto(todo);
+    }
+
+    private Todo getTodoByAuthor(User user, Long id) {
+        return user.getTodos().stream()
+            .filter(todos -> todos.getTodoId().equals(id))
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("작성자만 삭제/수정할 수 있습니다."));
     }
 
 
@@ -56,7 +85,8 @@ public class TodoService {
         );
     }
 
-    private List<GetTodoListResponseDto> getTodosByTitle(List<GetTodoListResponseDto> todoList, String title) {
+    private List<GetTodoListResponseDto> getTodosByTitle(List<GetTodoListResponseDto> todoList,
+        String title) {
         return todoList.stream()
             .map(todos -> {
                 List<GetTodoResponseDto> filteredTodos = todos.getTodos().stream()
@@ -66,4 +96,5 @@ public class TodoService {
             })
             .toList();
     }
+
 }
