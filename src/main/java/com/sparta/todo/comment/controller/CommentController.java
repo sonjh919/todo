@@ -1,5 +1,10 @@
 package com.sparta.todo.comment.controller;
 
+import static com.sparta.todo.message.CommentMessage.CREATE_COMMENT_API;
+import static com.sparta.todo.message.CommentMessage.CREATE_COMMENT_SUCCESS;
+import static com.sparta.todo.message.CommentMessage.DELETE_COMMENT_API;
+import static com.sparta.todo.message.CommentMessage.PATCH_COMMENT_API;
+import static com.sparta.todo.message.CommentMessage.PATCH_COMMENT_SUCCESS;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -29,12 +34,12 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("v1/todos/{todoId}/comments")
-    @Operation(summary = "댓글 작성")
+    @Operation(summary = CREATE_COMMENT_API)
     public ResponseEntity<ResponseDto> createComment(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @RequestBody @Valid CommentRequestDto requestDto) {
-        log.info("댓글 작성 API");
+        log.info(CREATE_COMMENT_API);
 
         CommentResponseDto commentResponseDto = commentService.createComment(accessToken, todoId, requestDto);
         URI createdUri = linkTo(
@@ -42,18 +47,18 @@ public class CommentController {
             commentResponseDto.getCommentId()).toUri();
 
         return ResponseEntity.created(createdUri)
-            .body(new ResponseDto("댓글 작성 성공", commentResponseDto));
+            .body(new ResponseDto(CREATE_COMMENT_SUCCESS, commentResponseDto));
     }
 
     @PatchMapping("v1/todos/{todoId}/comments/{commentId}")
-    @Operation(summary = "댓글 수정")
+    @Operation(summary = PATCH_COMMENT_API)
     public ResponseEntity<ResponseDto> updateComment(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @PathVariable Long commentId,
         @RequestBody @Valid CommentRequestDto requestDto
     ) {
-        log.info("할일카드 수정 API");
+        log.info(PATCH_COMMENT_API);
 
         CommentResponseDto commentResponseDto = commentService.updateComment(accessToken, todoId, commentId, requestDto);
         URI createdUri = linkTo(
@@ -61,17 +66,17 @@ public class CommentController {
             commentResponseDto.getCommentId()).toUri();
 
         return ResponseEntity.created(createdUri)
-            .body(new ResponseDto("할일카드 수정 성공", commentResponseDto));
+            .body(new ResponseDto(PATCH_COMMENT_SUCCESS, commentResponseDto));
     }
 
     @DeleteMapping("v1/todos/{todoId}/comments/{commentId}")
-    @Operation(summary = "댓글 삭제")
+    @Operation(summary = DELETE_COMMENT_API)
     public ResponseEntity<ResponseDto> deleteTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @PathVariable Long commentId
     ){
-        log.info("댓글 삭제 API");
+        log.info(DELETE_COMMENT_API);
 
         commentService.deleteComment(accessToken, todoId, commentId);
 

@@ -1,12 +1,22 @@
 package com.sparta.todo.todo.controller;
 
+import static com.sparta.todo.message.TodoMessage.CREATE_TODO_API;
+import static com.sparta.todo.message.TodoMessage.CREATE_TODO_SUCCESS;
+import static com.sparta.todo.message.TodoMessage.DELETE_TODO_API;
+import static com.sparta.todo.message.TodoMessage.GET_TODO_API;
+import static com.sparta.todo.message.TodoMessage.GET_TODO_SUCCESS;
+import static com.sparta.todo.message.TodoMessage.PATCH_TODO_API;
+import static com.sparta.todo.message.TodoMessage.PATCH_TODO_DESCRIPTION;
+import static com.sparta.todo.message.TodoMessage.PATCH_TODO_SUCCESS;
+import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_API;
+import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_DESCRIPTION;
+import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_SUCCESS;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.sparta.todo.common.ResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
 import com.sparta.todo.todo.dto.TodoResponseDto;
-import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -34,11 +44,11 @@ public class TodoController {
     private final TodoService todoService;
 
     @PostMapping("v1/todos")
-    @Operation(summary = "할일카드 작성")
+    @Operation(summary = CREATE_TODO_API)
     public ResponseEntity<ResponseDto> createTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @RequestBody @Valid TodoRequestDto requestDto) {
-        log.info("할일카드 작성 API");
+        log.info(CREATE_TODO_API);
 
         TodoResponseDto todoResponseDto = todoService.createTodo(accessToken, requestDto);
         URI createdUri = linkTo(
@@ -46,30 +56,29 @@ public class TodoController {
             todoResponseDto.getTodoId()).toUri();
 
         return ResponseEntity.created(createdUri)
-            .body(new ResponseDto("할일카드 작성 성공", todoResponseDto));
+            .body(new ResponseDto(CREATE_TODO_SUCCESS, todoResponseDto));
     }
 
     @GetMapping("v1/todos/{id}")
-    @Operation(summary = "할일카드 조회")
+    @Operation(summary = GET_TODO_API)
     public ResponseEntity<ResponseDto> getTodoById(@PathVariable Long id) {
-        log.info("할일카드 조회 API");
+        log.info(GET_TODO_API);
 
-        return ResponseEntity.ok().body(new ResponseDto("할일카드 조회 성공", todoService.getTodoById(id)));
+        return ResponseEntity.ok()
+            .body(new ResponseDto(GET_TODO_SUCCESS, todoService.getTodoById(id)));
     }
 
     @GetMapping("v1/todos")
-    @Operation(summary = "할일카드 전체 목록 조회 및 검색",
-        description = "title 정보가 없으면 할일카드 전체의 목록을 조회합니다. title 정보가 포함되어 있다면, 할일카드들을 제목으로 검색하여 결과를 반환합니다.")
+    @Operation(summary = SEARCH_TODOS_API, description = SEARCH_TODOS_DESCRIPTION)
     public ResponseEntity<ResponseDto> getTodos(@RequestParam(required = false) String title) {
-        log.info("할일카드 전체 목록 조회 및 검색 API");
+        log.info(SEARCH_TODOS_API);
 
         return ResponseEntity.ok()
-            .body(new ResponseDto("할일카드 목록 조회 성공", todoService.getTodos(title)));
+            .body(new ResponseDto(SEARCH_TODOS_SUCCESS, todoService.getTodos(title)));
     }
 
     @PatchMapping("v1/todos/{id}")
-    @Operation(summary = "할일카드 수정",
-    description = "할일카드를 수정합니다. isCompleted 정보가 포함되어 있다면 완료 여부를 체크할 수 있습니다. isPrivate 정보가 포함되어 있다면 비공개 여부를 체크할 수 있습니다.")
+    @Operation(summary = PATCH_TODO_API, description = PATCH_TODO_DESCRIPTION)
     public ResponseEntity<ResponseDto> updateTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @RequestBody @Valid TodoRequestDto requestDto,
@@ -77,24 +86,26 @@ public class TodoController {
         @RequestParam(required = false) Boolean isCompleted,
         @RequestParam(required = false) Boolean isPrivate
     ) {
-        log.info("할일카드 수정 API");
+        log.info(PATCH_TODO_API);
 
-        TodoResponseDto todoResponseDto = todoService.updateTodo(accessToken, requestDto, id, isCompleted, isPrivate);
+        TodoResponseDto todoResponseDto = todoService.updateTodo(accessToken, requestDto, id,
+            isCompleted, isPrivate);
         URI createdUri = linkTo(
-            methodOn(TodoController.class).updateTodo(accessToken, requestDto, id, isCompleted, isPrivate)).slash(
+            methodOn(TodoController.class).updateTodo(accessToken, requestDto, id, isCompleted,
+                isPrivate)).slash(
             todoResponseDto.getTodoId()).toUri();
 
         return ResponseEntity.created(createdUri)
-            .body(new ResponseDto("할일카드 수정 성공", todoResponseDto));
+            .body(new ResponseDto(PATCH_TODO_SUCCESS, todoResponseDto));
     }
 
     @DeleteMapping("v1/todos/{id}")
-    @Operation(summary = "할일카드 삭제")
+    @Operation(summary = DELETE_TODO_API)
     public ResponseEntity<ResponseDto> deleteTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long id
-    ){
-        log.info("할일카드 삭제 API");
+    ) {
+        log.info(DELETE_TODO_API);
 
         todoService.deleteTodo(accessToken, id);
 
