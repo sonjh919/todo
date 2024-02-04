@@ -29,7 +29,7 @@ public class TodoService {
     @Transactional
     public TodoResponseDto createTodo(String accessToken, TodoRequestDto requestDto) {
         String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = userRepository.findByUserName(author).orElseThrow();
+        User user = validation.userBy(author);
         Todo todo = new Todo(requestDto, user);
 
         return new TodoResponseDto(todoRepository.save(todo));
