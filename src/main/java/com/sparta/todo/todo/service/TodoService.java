@@ -56,14 +56,10 @@ public class TodoService {
         Boolean isCompleted, Boolean isPrivate) {
         Todo todo = getTodoByTokenAndId(accessToken, id);
 
-        if (isCompleted != null) {
-            todo.setCompleted(isCompleted);
-        }
-        if (isPrivate != null) {
-            todo.setPrivate(isPrivate);
-        }
-
+        todo = setTodoComplete(todo, isCompleted);
+        todo = setTodoPrivate(todo, isPrivate);
         todo.update(requestDto);
+
         return new TodoResponseDto(todo);
     }
 
@@ -76,7 +72,7 @@ public class TodoService {
 
     private Todo getTodoByTokenAndId(String accessToken, Long id) {
         String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = userRepository.findByUserName(author).orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
+        User user = validateUser(author);
         return getTodoByAuthor(user, id);
     }
 
@@ -103,5 +99,25 @@ public class TodoService {
                 return new GetTodoListResponseDto(todos.getAuthor(), filteredTodos);
             })
             .toList();
+    }
+
+    private Todo setTodoPrivate(Todo todo, Boolean isPrivate) {
+        if (isPrivate != null) {
+            todo.setPrivate(isPrivate);
+        }
+        return todo;
+    }
+
+    private Todo setTodoComplete(Todo todo, Boolean isCompleted) {
+        if (isCompleted != null) {
+            todo.setCompleted(isCompleted);
+        }
+        return todo;
+    }
+
+    private User validateUser(String userName) {
+        return userRepository.findByUserName(userName).orElseThrow(
+            () -> new NoSuchElementException("회원을 찾을 수 없습니다.")
+        );
     }
 }
