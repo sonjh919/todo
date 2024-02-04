@@ -6,10 +6,8 @@ import com.sparta.todo.comment.entity.Comment;
 import com.sparta.todo.comment.repository.CommentRepository;
 import com.sparta.todo.jwt.JwtUtil;
 import com.sparta.todo.todo.entity.Todo;
-import com.sparta.todo.todo.repository.TodoRepository;
 import com.sparta.todo.user.entity.User;
-import com.sparta.todo.user.repository.UserRepository;
-import java.util.NoSuchElementException;
+import com.sparta.todo.validation.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -20,9 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CommentService {
 
+    private final Validation validation;
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final TodoRepository todoRepository;
     private final JwtUtil jwtUtil;
 
     public CommentResponseDto createComment(String accessToken, Long todoId,
@@ -30,10 +27,8 @@ public class CommentService {
 
         String author = jwtUtil.getUserInfoFromToken(accessToken);
 
-        User user = userRepository.findByUserName(author)
-            .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
-        Todo todo = todoRepository.findById(todoId)
-            .orElseThrow(() -> new NoSuchElementException("해당 할일카드가 존재하지 않습니다."));
+        User user = validation.userBy(author);
+        Todo todo = validation.findTodoBy(todoId);
 
         Comment comment = new Comment(requestDto, todo, user);
         return new CommentResponseDto(commentRepository.save(comment));
@@ -41,13 +36,9 @@ public class CommentService {
 
     public CommentResponseDto updateComment(String accessToken, Long todoId, Long commentId, CommentRequestDto requestDto) {
         String author = jwtUtil.getUserInfoFromToken(accessToken);
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-            () -> new NoSuchElementException("해당 댓글은 존재하지 않습니다.")
-        );
+        Comment comment = validation.findCommentBy(commentId);
 
-        todoRepository.findById(todoId).orElseThrow(
-            () -> new NoSuchElementException("해당 할일카드가 존재하지 않습니다.")
-        );
+        validation.findTodoBy(todoId);
 
         if(author.equals(comment.getUser().getUserName())) {
             comment.update(requestDto);
@@ -59,13 +50,9 @@ public class CommentService {
 
     public void deleteComment(String accessToken, Long todoId, Long commentId) {
         jwtUtil.getUserInfoFromToken(accessToken);
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-            () -> new NoSuchElementException("해당 댓글은 존재하지 않습니다.")
-        );
 
-        todoRepository.findById(todoId).orElseThrow(
-            () -> new NoSuchElementException("해당 할일카드가 존재하지 않습니다.")
-        );
+        Comment comment = validation.findCommentBy(commentId);
+        validation.findTodoBy(todoId);
 
         commentRepository.delete(comment);
 

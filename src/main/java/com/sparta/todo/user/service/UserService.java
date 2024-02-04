@@ -6,7 +6,7 @@ import com.sparta.todo.user.dto.SignupRequestDto;
 import com.sparta.todo.user.dto.SignupResponseDto;
 import com.sparta.todo.user.entity.User;
 import com.sparta.todo.user.repository.UserRepository;
-import java.util.NoSuchElementException;
+import com.sparta.todo.validation.Validation;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private final Validation validation;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -40,7 +41,7 @@ public class UserService {
         String userName = requestDto.getUserName();
         String password = requestDto.getPassword();
 
-        User user = validateUser(userName);
+        User user = validation.userBy(userName);
         validatePassword(user, password);
 
         return jwtUtil.createToken(user.getUserName());
@@ -52,12 +53,6 @@ public class UserService {
         }
     }
 
-    private User validateUser(String userName) {
-        return userRepository.findByUserName(userName).orElseThrow(
-            () -> new NoSuchElementException("회원을 찾을 수 없습니다.")
-        );
-    }
-    
     private void validateUserDuplicate(Optional<User> checkUsername) {
         if (checkUsername.isPresent()) {
             throw new DuplicateKeyException("중복된 사용자가 존재합니다.");

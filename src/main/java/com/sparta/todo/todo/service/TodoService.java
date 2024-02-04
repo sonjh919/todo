@@ -1,16 +1,15 @@
 package com.sparta.todo.todo.service;
 
-
 import com.sparta.todo.jwt.JwtUtil;
-import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.dto.GetTodoListResponseDto;
 import com.sparta.todo.todo.dto.GetTodoResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
+import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.todo.repository.TodoRepository;
 import com.sparta.todo.user.entity.User;
 import com.sparta.todo.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.sparta.todo.validation.Validation;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TodoService {
 
+    private final Validation validation;
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
@@ -36,7 +36,7 @@ public class TodoService {
     }
 
     public GetTodoResponseDto getTodoById(Long id) {
-        Todo todo = findTodo(id);
+        Todo todo = validation.findTodoBy(id);
         return new GetTodoResponseDto(todo);
     }
 
@@ -72,7 +72,7 @@ public class TodoService {
 
     private Todo getTodoByTokenAndId(String accessToken, Long id) {
         String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = validateUser(author);
+        User user = validation.userBy(author);
         return getTodoByAuthor(user, id);
     }
 
@@ -81,12 +81,6 @@ public class TodoService {
             .filter(todos -> todos.getTodoId().equals(id))
             .findFirst()
             .orElseThrow(() -> new NoSuchElementException("작성자만 삭제/수정할 수 있습니다."));
-    }
-
-    private Todo findTodo(Long id) {
-        return todoRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException("선택한 일정은 존재하지 않습니다.")
-        );
     }
 
     private List<GetTodoListResponseDto> getTodosByTitle(List<GetTodoListResponseDto> todoList,
@@ -115,9 +109,4 @@ public class TodoService {
         return todo;
     }
 
-    private User validateUser(String userName) {
-        return userRepository.findByUserName(userName).orElseThrow(
-            () -> new NoSuchElementException("회원을 찾을 수 없습니다.")
-        );
-    }
 }
