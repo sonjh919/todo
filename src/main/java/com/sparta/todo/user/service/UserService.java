@@ -8,7 +8,10 @@ import com.sparta.todo.user.entity.User;
 import com.sparta.todo.user.exception.LoginException;
 import com.sparta.todo.user.exception.SignupException;
 import com.sparta.todo.user.repository.UserRepository;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +44,11 @@ public class UserService {
         String password = requestDto.getPassword();
 
         User user = userRepository.findByUserName(userName).orElseThrow(
-            () -> new LoginException("회원을 찾을 수 없습니다.")
+            () -> new NoSuchElementException("회원을 찾을 수 없습니다.")
         );
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new LoginException("패스워드를 잘못 입력하였습니다.");
+            throw new BadCredentialsException("패스워드를 잘못 입력하였습니다.");
         }
 
         return jwtUtil.createToken(user.getUserName());
@@ -54,7 +57,7 @@ public class UserService {
 
     private void validateUserDuplicate(Optional<User> checkUsername) {
         if (checkUsername.isPresent()) {
-            throw new SignupException("중복된 사용자가 존재합니다.");
+            throw new DuplicateKeyException("중복된 사용자가 존재합니다.");
         }
     }
 }
