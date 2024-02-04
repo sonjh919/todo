@@ -5,17 +5,14 @@ import com.sparta.todo.user.dto.LoginRequestDto;
 import com.sparta.todo.user.dto.SignupRequestDto;
 import com.sparta.todo.user.dto.SignupResponseDto;
 import com.sparta.todo.user.entity.User;
-import com.sparta.todo.user.exception.LoginException;
-import com.sparta.todo.user.exception.SignupException;
 import com.sparta.todo.user.repository.UserRepository;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
