@@ -22,18 +22,15 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/v1/user/signup")
-    @Operation(summary = "회원가입")
-    public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
-        log.info("회원 가입 API");
-        return ResponseEntity.ok().body(new ResponseDto("회원가입 성공", userService.signup(requestDto)));
-    }
+    private static final String SIGN_UP_API = "회원 가입 API";
+    private static final String SIGN_UP_SUCCESS = "회원 가입 성공";
 
-    @GetMapping("/v1/user/test")
-    @Operation(summary = "테스트 api")
-    public String test() {
-        log.info("테스트 API");
-        return "test succeed";
+
+    @PostMapping("/v1/user/signup")
+    @Operation(summary = SIGN_UP_API)
+    public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
+        log.info(SIGN_UP_API);
+        return ResponseEntity.ok().body(new ResponseDto(SIGN_UP_SUCCESS, userService.signup(requestDto)));
     }
 
     @PostMapping("/v1/user/login")

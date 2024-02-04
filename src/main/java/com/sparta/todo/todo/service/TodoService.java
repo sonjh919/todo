@@ -76,7 +76,7 @@ public class TodoService {
 
     private Todo getTodoByTokenAndId(String accessToken, Long id) {
         String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = userRepository.findByUserName(author).orElseThrow();
+        User user = userRepository.findByUserName(author).orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
         return getTodoByAuthor(user, id);
     }
 
