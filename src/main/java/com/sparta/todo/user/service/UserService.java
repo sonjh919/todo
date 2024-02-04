@@ -40,18 +40,24 @@ public class UserService {
         String userName = requestDto.getUserName();
         String password = requestDto.getPassword();
 
-        User user = userRepository.findByUserName(userName).orElseThrow(
-            () -> new NoSuchElementException("회원을 찾을 수 없습니다.")
-        );
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("패스워드를 잘못 입력하였습니다.");
-        }
+        User user = validateUser(userName);
+        validatePassword(user, password);
 
         return jwtUtil.createToken(user.getUserName());
     }
 
+    private void validatePassword(User user, String password) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("패스워드를 잘못 입력하였습니다.");
+        }
+    }
 
+    private User validateUser(String userName) {
+        return userRepository.findByUserName(userName).orElseThrow(
+            () -> new NoSuchElementException("회원을 찾을 수 없습니다.")
+        );
+    }
+    
     private void validateUserDuplicate(Optional<User> checkUsername) {
         if (checkUsername.isPresent()) {
             throw new DuplicateKeyException("중복된 사용자가 존재합니다.");

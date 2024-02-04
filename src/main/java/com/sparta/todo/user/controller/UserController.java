@@ -26,7 +26,6 @@ public class UserController {
 
     private final UserService userService;
 
-
     @PostMapping("/v1/user/signup")
     @Operation(summary = SIGN_UP_API)
     public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
