@@ -5,8 +5,6 @@ import static com.sparta.todo.message.CommentMessage.CREATE_COMMENT_SUCCESS;
 import static com.sparta.todo.message.CommentMessage.DELETE_COMMENT_API;
 import static com.sparta.todo.message.CommentMessage.PATCH_COMMENT_API;
 import static com.sparta.todo.message.CommentMessage.PATCH_COMMENT_SUCCESS;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.sparta.todo.comment.dto.CommentRequestDto;
 import com.sparta.todo.comment.dto.CommentResponseDto;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Slf4j
 @RestController
@@ -42,11 +41,8 @@ public class CommentController {
         log.info(CREATE_COMMENT_API);
 
         CommentResponseDto commentResponseDto = commentService.createComment(accessToken, todoId, requestDto);
-        URI createdUri = linkTo(
-            methodOn(CommentController.class).createComment(accessToken, todoId, requestDto)).slash(
-            commentResponseDto.getCommentId()).toUri();
 
-        return ResponseEntity.created(createdUri)
+        return ResponseEntity.created(createUri(commentResponseDto.getCommentId()))
             .body(new ResponseDto(CREATE_COMMENT_SUCCESS, commentResponseDto));
     }
 
@@ -61,11 +57,9 @@ public class CommentController {
         log.info(PATCH_COMMENT_API);
 
         CommentResponseDto commentResponseDto = commentService.updateComment(accessToken, todoId, commentId, requestDto);
-        URI createdUri = linkTo(
-            methodOn(CommentController.class).updateComment(accessToken, todoId, commentId, requestDto)).slash(
-            commentResponseDto.getCommentId()).toUri();
 
-        return ResponseEntity.created(createdUri)
+
+        return ResponseEntity.created(updateUri())
             .body(new ResponseDto(PATCH_COMMENT_SUCCESS, commentResponseDto));
     }
 
@@ -81,6 +75,21 @@ public class CommentController {
         commentService.deleteComment(accessToken, todoId, commentId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    private URI createUri(Long commentId) {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(commentId)
+            .toUri();
+    }
+
+    private URI updateUri() {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+            .replaceQueryParam("isCompleted")
+            .replaceQueryParam("isPrivate")
+            .build()
+            .toUri();
     }
 
 }

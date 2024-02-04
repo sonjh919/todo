@@ -11,8 +11,6 @@ import static com.sparta.todo.message.TodoMessage.PATCH_TODO_SUCCESS;
 import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_API;
 import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_DESCRIPTION;
 import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_SUCCESS;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.sparta.todo.commonDto.ResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
@@ -34,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Slf4j
 @RestController
@@ -51,11 +50,8 @@ public class TodoController {
         log.info(CREATE_TODO_API);
 
         TodoResponseDto todoResponseDto = todoService.createTodo(accessToken, requestDto);
-        URI createdUri = linkTo(
-            methodOn(TodoController.class).createTodo(accessToken, requestDto)).slash(
-            todoResponseDto.getTodoId()).toUri();
 
-        return ResponseEntity.created(createdUri)
+        return ResponseEntity.created(createUri(todoResponseDto.getTodoId()))
             .body(new ResponseDto(CREATE_TODO_SUCCESS, todoResponseDto));
     }
 
@@ -88,15 +84,9 @@ public class TodoController {
     ) {
         log.info(PATCH_TODO_API);
 
-        TodoResponseDto todoResponseDto = todoService.updateTodo(accessToken, requestDto, id,
-            isCompleted, isPrivate);
-        URI createdUri = linkTo(
-            methodOn(TodoController.class).updateTodo(accessToken, requestDto, id, isCompleted,
-                isPrivate)).slash(
-            todoResponseDto.getTodoId()).toUri();
-
-        return ResponseEntity.created(createdUri)
-            .body(new ResponseDto(PATCH_TODO_SUCCESS, todoResponseDto));
+        return ResponseEntity.created(updateUri())
+            .body(new ResponseDto(PATCH_TODO_SUCCESS, todoService.updateTodo(accessToken, requestDto, id,
+                isCompleted, isPrivate)));
     }
 
     @DeleteMapping("v1/todos/{id}")
@@ -110,6 +100,22 @@ public class TodoController {
         todoService.deleteTodo(accessToken, id);
 
         return ResponseEntity.noContent().build();
+    }
+
+
+    private URI createUri(Long todoId) {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(todoId)
+            .toUri();
+    }
+
+    private URI updateUri() {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+            .replaceQueryParam("isCompleted")
+            .replaceQueryParam("isPrivate")
+            .build()
+            .toUri();
     }
 
 
