@@ -14,7 +14,7 @@ import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_SUCCESS;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import com.sparta.todo.common.ResponseDto;
+import com.sparta.todo.commonDto.ResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
 import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.service.TodoService;

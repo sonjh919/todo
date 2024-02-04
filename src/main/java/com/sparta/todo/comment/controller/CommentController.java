@@ -11,7 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import com.sparta.todo.comment.dto.CommentRequestDto;
 import com.sparta.todo.comment.dto.CommentResponseDto;
 import com.sparta.todo.comment.service.CommentService;
-import com.sparta.todo.common.ResponseDto;
+import com.sparta.todo.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.net.URI;

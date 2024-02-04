@@ -1,4 +1,4 @@
-package com.sparta.todo.common;
+package com.sparta.todo.commonDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

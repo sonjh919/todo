@@ -5,7 +5,7 @@ import static com.sparta.todo.message.UserMessage.LOGIN_SUCCESS;
 import static com.sparta.todo.message.UserMessage.SIGN_UP_API;
 import static com.sparta.todo.message.UserMessage.SIGN_UP_SUCCESS;
 
-import com.sparta.todo.common.ResponseDto;
+import com.sparta.todo.commonDto.ResponseDto;
 import com.sparta.todo.user.dto.LoginRequestDto;
 import com.sparta.todo.user.dto.SignupRequestDto;
 import com.sparta.todo.user.service.UserService;
