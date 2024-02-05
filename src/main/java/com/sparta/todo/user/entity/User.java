@@ -1,6 +1,7 @@
 package com.sparta.todo.user.entity;
 
 import com.sparta.todo.todo.entity.Todo;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class User {
     @Column(nullable = false, unique = true, name = "PASSWORD")
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Todo> todos = new ArrayList<>();
 
     public User(String userName, String password) {
