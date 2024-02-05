@@ -1,7 +1,10 @@
 package com.sparta.todo.message;
 
 public class UserMessage {
-    private UserMessage(){}
+
+    private UserMessage() {
+    }
+
     public static final String SIGN_UP_API = "회원 가입 API";
     public static final String SIGN_UP_SUCCESS = "회원 가입 성공";
 

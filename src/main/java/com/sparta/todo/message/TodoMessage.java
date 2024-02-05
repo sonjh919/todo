@@ -1,7 +1,10 @@
 package com.sparta.todo.message;
 
 public class TodoMessage {
-    public TodoMessage(){}
+
+    public TodoMessage() {
+    }
+
     public static final String CREATE_TODO_API = "할일카드 작성 API";
     public static final String CREATE_TODO_SUCCESS = "할일카드 작성 성공";
 

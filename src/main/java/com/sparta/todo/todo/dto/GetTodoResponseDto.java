@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetTodoResponseDto {
+
     private Long id;
     private String title;
     private String content;
@@ -18,7 +19,7 @@ public class GetTodoResponseDto {
     private boolean isCompleted;
     private boolean isPrivate;
 
-    public GetTodoResponseDto(Todo todo){
+    public GetTodoResponseDto(Todo todo) {
         this.id = todo.getTodoId();
         this.title = todo.getTitle();
         this.content = todo.getContent();

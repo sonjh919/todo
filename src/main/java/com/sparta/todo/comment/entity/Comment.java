@@ -3,7 +3,6 @@ package com.sparta.todo.comment.entity;
 import com.sparta.todo.comment.dto.CommentRequestDto;
 import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.user.entity.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,7 +39,7 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Todo todo;
 
-    @Column(name="COMMENT", length = 512)
+    @Column(name = "COMMENT", length = 512)
     private String comment;
 
     public Comment(CommentRequestDto requestDto, Todo todo, User user) {

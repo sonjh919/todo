@@ -35,7 +35,9 @@ public class CommentService {
         return new CommentResponseDto(commentRepository.save(comment));
     }
 
-    public CommentResponseDto updateComment(String accessToken, Long todoId, Long commentId, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(String accessToken, Long todoId, Long commentId,
+        CommentRequestDto requestDto) {
+
         String author = jwtUtil.getUserInfoFromToken(accessToken);
         Comment comment = validation.findCommentBy(commentId);
 
@@ -59,13 +61,13 @@ public class CommentService {
     }
 
     private void validateAuthorByComment(String author, Comment comment) {
-        if(!author.equals(comment.getUser().getUserName())) {
+        if (!author.equals(comment.getUser().getUserName())) {
             throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
         }
     }
 
     private void validateCommentByTodoId(Todo todo, Comment comment) {
-        if(!todo.getTodoId().equals(comment.getTodo().getTodoId())){
+        if (!todo.getTodoId().equals(comment.getTodo().getTodoId())) {
             throw new NoSuchElementException("할일카드에 해당 댓글이 존재하지 않습니다.");
         }
     }

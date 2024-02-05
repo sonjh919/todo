@@ -31,7 +31,7 @@ public class Validation {
         );
     }
 
-    public Comment findCommentBy(Long id){
+    public Comment findCommentBy(Long id) {
         return commentRepository.findById(id).orElseThrow(
             () -> new NoSuchElementException("해당 댓글은 존재하지 않습니다.")
         );

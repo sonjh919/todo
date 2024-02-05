@@ -54,8 +54,9 @@ public class JwtUtil {
 
     public String getUserInfoFromToken(String bearerToken) {
         String token = getJwtFromHeader(bearerToken);
-        if(validateToken((token))){
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        if (validateToken((token))) {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody()
+                .getSubject();
         }
         throw new IllegalArgumentException("오류");
     }

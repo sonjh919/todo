@@ -40,10 +40,14 @@ public class CommentController {
         @RequestBody @Valid CommentRequestDto requestDto) {
         log.info(CREATE_COMMENT_API);
 
-        CommentResponseDto commentResponseDto = commentService.createComment(accessToken, todoId, requestDto);
+        CommentResponseDto commentResponseDto = commentService.createComment(accessToken, todoId,
+            requestDto);
 
         return ResponseEntity.created(createUri(commentResponseDto.getCommentId()))
-            .body(new ResponseDto(CREATE_COMMENT_SUCCESS, commentResponseDto));
+            .body(ResponseDto.builder()
+                .message(CREATE_COMMENT_SUCCESS)
+                .data(commentResponseDto)
+                .build());
     }
 
     @PatchMapping("v1/todos/{todoId}/comments/{commentId}")
@@ -56,11 +60,14 @@ public class CommentController {
     ) {
         log.info(PATCH_COMMENT_API);
 
-        CommentResponseDto commentResponseDto = commentService.updateComment(accessToken, todoId, commentId, requestDto);
-
+        CommentResponseDto commentResponseDto = commentService.updateComment(accessToken, todoId,
+            commentId, requestDto);
 
         return ResponseEntity.created(updateUri())
-            .body(new ResponseDto(PATCH_COMMENT_SUCCESS, commentResponseDto));
+            .body(ResponseDto.builder()
+                .message(PATCH_COMMENT_SUCCESS)
+                .data(commentResponseDto)
+                .build());
     }
 
     @DeleteMapping("v1/todos/{todoId}/comments/{commentId}")
@@ -69,7 +76,7 @@ public class CommentController {
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @PathVariable Long commentId
-    ){
+    ) {
         log.info(DELETE_COMMENT_API);
 
         commentService.deleteComment(accessToken, todoId, commentId);

@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return createResponse(HttpStatus.BAD_REQUEST, e.getBindingResult().getFieldError().getDefaultMessage());
+    public ResponseEntity<ExceptionDto> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException e) {
+        return createResponse(HttpStatus.BAD_REQUEST,
+            e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
@@ -53,7 +55,11 @@ public class ExceptionController {
 
     private ResponseEntity<ExceptionDto> createResponse(HttpStatus status, String message) {
         return ResponseEntity.status(status.value())
-            .body(new ExceptionDto(status.value(), status, message));
+            .body(ExceptionDto.builder()
+                .statusCode(status.value())
+                .state(status)
+                .message(message)
+                .build());
     }
 
 }

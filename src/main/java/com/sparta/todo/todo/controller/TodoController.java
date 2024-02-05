@@ -52,7 +52,10 @@ public class TodoController {
         TodoResponseDto todoResponseDto = todoService.createTodo(accessToken, requestDto);
 
         return ResponseEntity.created(createUri(todoResponseDto.getTodoId()))
-            .body(new ResponseDto(CREATE_TODO_SUCCESS, todoResponseDto));
+            .body(ResponseDto.builder()
+                .message(CREATE_TODO_SUCCESS)
+                .data(todoResponseDto)
+                .build());
     }
 
     @GetMapping("v1/todos/{id}")
@@ -61,7 +64,10 @@ public class TodoController {
         log.info(GET_TODO_API);
 
         return ResponseEntity.ok()
-            .body(new ResponseDto(GET_TODO_SUCCESS, todoService.getTodoById(id)));
+            .body(ResponseDto.builder()
+                .message(GET_TODO_SUCCESS)
+                .data(todoService.getTodoById(id))
+                .build());
     }
 
     @GetMapping("v1/todos")
@@ -70,7 +76,10 @@ public class TodoController {
         log.info(SEARCH_TODOS_API);
 
         return ResponseEntity.ok()
-            .body(new ResponseDto(SEARCH_TODOS_SUCCESS, todoService.getTodos(title)));
+            .body(ResponseDto.builder()
+                .message(SEARCH_TODOS_SUCCESS)
+                .data(todoService.getTodos(title))
+                .build());
     }
 
     @PatchMapping("v1/todos/{id}")
@@ -84,9 +93,14 @@ public class TodoController {
     ) {
         log.info(PATCH_TODO_API);
 
+        TodoResponseDto todoResponseDto = todoService.updateTodo(accessToken, requestDto, id,
+            isCompleted, isPrivate);
+
         return ResponseEntity.created(updateUri())
-            .body(new ResponseDto(PATCH_TODO_SUCCESS, todoService.updateTodo(accessToken, requestDto, id,
-                isCompleted, isPrivate)));
+            .body(ResponseDto.builder()
+                .message(PATCH_TODO_SUCCESS)
+                .data(todoResponseDto)
+                .build());
     }
 
     @DeleteMapping("v1/todos/{id}")

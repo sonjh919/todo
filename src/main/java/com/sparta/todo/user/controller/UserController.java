@@ -30,17 +30,24 @@ public class UserController {
     @Operation(summary = SIGN_UP_API)
     public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
         log.info(SIGN_UP_API);
+
         return ResponseEntity.ok()
-            .body(new ResponseDto(SIGN_UP_SUCCESS, userService.signup(requestDto)));
+            .body(ResponseDto.builder()
+                .message(SIGN_UP_SUCCESS)
+                .data(userService.signup(requestDto))
+                .build());
     }
 
     @PostMapping("/v1/user/login")
     @Operation(summary = LOGIN_API)
     public ResponseEntity<ResponseDto> login(@RequestBody LoginRequestDto requestDto) {
         log.info(LOGIN_API);
+
         return ResponseEntity.ok()
             .header(HttpHeaders.AUTHORIZATION, userService.login(requestDto))
-            .body(new ResponseDto(LOGIN_SUCCESS));
+            .body(ResponseDto.builder()
+                .message(LOGIN_SUCCESS)
+                .build());
     }
 
 }

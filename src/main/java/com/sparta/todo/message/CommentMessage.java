@@ -1,7 +1,10 @@
 package com.sparta.todo.message;
 
 public class CommentMessage {
-    public CommentMessage(){}
+
+    public CommentMessage() {
+    }
+
     public static final String CREATE_COMMENT_API = "댓글 작성 API";
     public static final String CREATE_COMMENT_SUCCESS = "댓글 작성 성공";
 
