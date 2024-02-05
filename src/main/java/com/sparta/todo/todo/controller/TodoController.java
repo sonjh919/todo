@@ -13,12 +13,15 @@ import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_DESCRIPTION;
 import static com.sparta.todo.message.TodoMessage.SEARCH_TODOS_SUCCESS;
 
 import com.sparta.todo.commonDto.ResponseDto;
+import com.sparta.todo.todo.dto.GetTodoListResponseDto;
+import com.sparta.todo.todo.dto.GetTodoResponseDto;
 import com.sparta.todo.todo.dto.TodoRequestDto;
 import com.sparta.todo.todo.dto.TodoResponseDto;
 import com.sparta.todo.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -44,7 +47,7 @@ public class TodoController {
 
     @PostMapping("v1/todos")
     @Operation(summary = CREATE_TODO_API)
-    public ResponseEntity<ResponseDto> createTodo(
+    public ResponseEntity<ResponseDto<TodoResponseDto>> createTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @RequestBody @Valid TodoRequestDto requestDto) {
         log.info(CREATE_TODO_API);
@@ -52,7 +55,7 @@ public class TodoController {
         TodoResponseDto todoResponseDto = todoService.createTodo(accessToken, requestDto);
 
         return ResponseEntity.created(createUri(todoResponseDto.getTodoId()))
-            .body(ResponseDto.builder()
+            .body(ResponseDto.<TodoResponseDto>builder()
                 .message(CREATE_TODO_SUCCESS)
                 .data(todoResponseDto)
                 .build());
@@ -60,11 +63,11 @@ public class TodoController {
 
     @GetMapping("v1/todos/{id}")
     @Operation(summary = GET_TODO_API)
-    public ResponseEntity<ResponseDto> getTodoById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<GetTodoResponseDto>> getTodoById(@PathVariable Long id) {
         log.info(GET_TODO_API);
 
         return ResponseEntity.ok()
-            .body(ResponseDto.builder()
+            .body(ResponseDto.<GetTodoResponseDto>builder()
                 .message(GET_TODO_SUCCESS)
                 .data(todoService.getTodoById(id))
                 .build());
@@ -72,11 +75,11 @@ public class TodoController {
 
     @GetMapping("v1/todos")
     @Operation(summary = SEARCH_TODOS_API, description = SEARCH_TODOS_DESCRIPTION)
-    public ResponseEntity<ResponseDto> getTodos(@RequestParam(required = false) String title) {
+    public ResponseEntity<ResponseDto<List<GetTodoListResponseDto>>> getTodos(@RequestParam(required = false) String title) {
         log.info(SEARCH_TODOS_API);
 
         return ResponseEntity.ok()
-            .body(ResponseDto.builder()
+            .body(ResponseDto.<List<GetTodoListResponseDto>>builder()
                 .message(SEARCH_TODOS_SUCCESS)
                 .data(todoService.getTodos(title))
                 .build());
@@ -84,7 +87,7 @@ public class TodoController {
 
     @PatchMapping("v1/todos/{id}")
     @Operation(summary = PATCH_TODO_API, description = PATCH_TODO_DESCRIPTION)
-    public ResponseEntity<ResponseDto> updateTodo(
+    public ResponseEntity<ResponseDto<TodoResponseDto>> updateTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @RequestBody @Valid TodoRequestDto requestDto,
         @PathVariable Long id,
@@ -97,7 +100,7 @@ public class TodoController {
             isCompleted, isPrivate);
 
         return ResponseEntity.created(updateUri())
-            .body(ResponseDto.builder()
+            .body(ResponseDto.<TodoResponseDto>builder()
                 .message(PATCH_TODO_SUCCESS)
                 .data(todoResponseDto)
                 .build());
@@ -105,7 +108,7 @@ public class TodoController {
 
     @DeleteMapping("v1/todos/{id}")
     @Operation(summary = DELETE_TODO_API)
-    public ResponseEntity<ResponseDto> deleteTodo(
+    public ResponseEntity<Void> deleteTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long id
     ) {

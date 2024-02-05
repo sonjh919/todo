@@ -34,7 +34,7 @@ public class CommentController {
 
     @PostMapping("v1/todos/{todoId}/comments")
     @Operation(summary = CREATE_COMMENT_API)
-    public ResponseEntity<ResponseDto> createComment(
+    public ResponseEntity<ResponseDto<CommentResponseDto>> createComment(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @RequestBody @Valid CommentRequestDto requestDto) {
@@ -44,7 +44,7 @@ public class CommentController {
             requestDto);
 
         return ResponseEntity.created(createUri(commentResponseDto.getCommentId()))
-            .body(ResponseDto.builder()
+            .body(ResponseDto.<CommentResponseDto>builder()
                 .message(CREATE_COMMENT_SUCCESS)
                 .data(commentResponseDto)
                 .build());
@@ -52,7 +52,7 @@ public class CommentController {
 
     @PatchMapping("v1/todos/{todoId}/comments/{commentId}")
     @Operation(summary = PATCH_COMMENT_API)
-    public ResponseEntity<ResponseDto> updateComment(
+    public ResponseEntity<ResponseDto<CommentResponseDto>> updateComment(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @PathVariable Long commentId,
@@ -64,7 +64,7 @@ public class CommentController {
             commentId, requestDto);
 
         return ResponseEntity.created(updateUri())
-            .body(ResponseDto.builder()
+            .body(ResponseDto.<CommentResponseDto>builder()
                 .message(PATCH_COMMENT_SUCCESS)
                 .data(commentResponseDto)
                 .build());
@@ -72,7 +72,7 @@ public class CommentController {
 
     @DeleteMapping("v1/todos/{todoId}/comments/{commentId}")
     @Operation(summary = DELETE_COMMENT_API)
-    public ResponseEntity<ResponseDto> deleteTodo(
+    public ResponseEntity<Void> deleteTodo(
         @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @PathVariable Long commentId

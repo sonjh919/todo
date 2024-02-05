@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ResponseDto {
+public class ResponseDto<T> {
 
     private String message;
-    private Object data;
+    private T data;
 
 }
