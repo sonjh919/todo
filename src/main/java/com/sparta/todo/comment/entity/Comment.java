@@ -3,6 +3,7 @@ package com.sparta.todo.comment.entity;
 import com.sparta.todo.comment.dto.CommentRequestDto;
 import com.sparta.todo.todo.entity.Todo;
 import com.sparta.todo.user.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +16,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -29,10 +32,12 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Todo todo;
 
     @Column(name="COMMENT", length = 512)
