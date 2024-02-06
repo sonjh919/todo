@@ -9,7 +9,8 @@
 
 # Development
 
----
+## Deploy
+http://todo-env.eba-gegemdvf.ap-northeast-2.elasticbeanstalk.com
 
 ## Prerequisites
 + JDK amazoncorretto 17
@@ -20,8 +21,6 @@
 
 ## Code Convension
 + [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
-
----
 
 # Architecture
 ![todoarchitecture](https://github.com/sonjh919/ScheduleManagement/assets/109019081/263b4a08-6b7a-4ad9-9f5a-b8cdc0792b14)
