@@ -10,7 +10,7 @@
 # Development
 
 ## Deploy
-http://todo-env.eba-gegemdvf.ap-northeast-2.elasticbeanstalk.com
+2024-02-14 이후로 서버 비용 이슈로 배포를 중단하였습니다.
 
 ## Prerequisites
 + JDK amazoncorretto 17
@@ -29,7 +29,6 @@ http://todo-env.eba-gegemdvf.ap-northeast-2.elasticbeanstalk.com
 ![ERD](https://github.com/sonjh919/ScheduleManagement/assets/109019081/d0bda85c-945c-424e-b20f-48052b042243)
 
 # Swagger
-[Swagger URL](http://todo-env.eba-gegemdvf.ap-northeast-2.elasticbeanstalk.com/swagger-ui/index.html)
 
 ![swagger](https://github.com/sonjh919/ScheduleManagement/assets/109019081/4a05e86e-ddbe-431f-b7c3-8f09c64652e8)
  
