@@ -4,7 +4,6 @@ import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.comment.dto.CommentResponseDto;
 import com.sparta.todo.domain.comment.entity.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
-import com.sparta.todo.global.jwt.JwtUtil;
 import com.sparta.todo.domain.todo.entity.Todo;
 import com.sparta.todo.domain.user.entity.User;
 import com.sparta.todo.global.validation.Validation;
