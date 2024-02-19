@@ -21,47 +21,38 @@ public class CommentService {
 
     private final Validation validation;
     private final CommentRepository commentRepository;
-    private final JwtUtil jwtUtil;
 
-    public CommentResponseDto createComment(String accessToken, Long todoId,
+    public CommentResponseDto createComment(User user, Long todoId,
         CommentRequestDto requestDto) {
 
-        String author = jwtUtil.getUserInfoFromToken(accessToken);
-
-        User user = validation.userBy(author);
         Todo todo = validation.findTodoBy(todoId);
 
         Comment comment = new Comment(requestDto, todo, user);
         return new CommentResponseDto(commentRepository.save(comment));
     }
 
-    public CommentResponseDto updateComment(String accessToken, Long todoId, Long commentId,
+    public CommentResponseDto updateComment(User user, Long todoId, Long commentId,
         CommentRequestDto requestDto) {
 
-        String author = jwtUtil.getUserInfoFromToken(accessToken);
         Comment comment = validation.findCommentBy(commentId);
 
         Todo todo = validation.findTodoBy(todoId);
 
         validateCommentByTodoId(todo, comment);
-        validateAuthorByComment(author, comment);
+        validateAuthorByComment(user, comment);
 
         comment.update(requestDto);
         return new CommentResponseDto(comment);
     }
 
-    public void deleteComment(String accessToken, Long todoId, Long commentId) {
-        jwtUtil.getUserInfoFromToken(accessToken);
-
+    public void deleteComment(Long todoId, Long commentId) {
         Comment comment = validation.findCommentBy(commentId);
         validation.findTodoBy(todoId);
-
         commentRepository.delete(comment);
-
     }
 
-    private void validateAuthorByComment(String author, Comment comment) {
-        if (!author.equals(comment.getUser().getUserName())) {
+    private void validateAuthorByComment(User user, Comment comment) {
+        if (!user.getUserName().equals(comment.getUser().getUserName())) {
             throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
         }
     }

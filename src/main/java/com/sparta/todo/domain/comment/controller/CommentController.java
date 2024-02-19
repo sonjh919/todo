@@ -9,19 +9,19 @@ import static com.sparta.todo.global.message.CommentMessage.PATCH_COMMENT_SUCCES
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.comment.dto.CommentResponseDto;
 import com.sparta.todo.domain.comment.service.CommentService;
+import com.sparta.todo.domain.user.entity.User;
 import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,11 +34,11 @@ public class CommentController {
     @PostMapping("v1/todos/{todoId}/comments")
     @Operation(summary = CREATE_COMMENT_API)
     public ResponseEntity<ResponseDto<CommentResponseDto>> createComment(
-        @RequestHeader(value = "Authorization") String accessToken,
+        @RequestAttribute("User") User user,
         @PathVariable Long todoId,
         @RequestBody @Valid CommentRequestDto requestDto) {
 
-        CommentResponseDto commentResponseDto = commentService.createComment(accessToken, todoId,
+        CommentResponseDto commentResponseDto = commentService.createComment(user, todoId,
             requestDto);
 
         return ResponseEntity.created(createUri(commentResponseDto.getCommentId()))
@@ -51,13 +51,13 @@ public class CommentController {
     @PatchMapping("v1/todos/{todoId}/comments/{commentId}")
     @Operation(summary = PATCH_COMMENT_API)
     public ResponseEntity<ResponseDto<CommentResponseDto>> updateComment(
-        @RequestHeader(value = "Authorization") String accessToken,
+        @RequestAttribute("User") User user,
         @PathVariable Long todoId,
         @PathVariable Long commentId,
         @RequestBody @Valid CommentRequestDto requestDto
     ) {
 
-        CommentResponseDto commentResponseDto = commentService.updateComment(accessToken, todoId,
+        CommentResponseDto commentResponseDto = commentService.updateComment(user, todoId,
             commentId, requestDto);
 
         return ResponseEntity.created(updateUri())
@@ -70,12 +70,11 @@ public class CommentController {
     @DeleteMapping("v1/todos/{todoId}/comments/{commentId}")
     @Operation(summary = DELETE_COMMENT_API)
     public ResponseEntity<Void> deleteTodo(
-        @RequestHeader(value = "Authorization") String accessToken,
         @PathVariable Long todoId,
         @PathVariable Long commentId
     ) {
 
-        commentService.deleteComment(accessToken, todoId, commentId);
+        commentService.deleteComment(todoId, commentId);
 
         return ResponseEntity.noContent().build();
     }

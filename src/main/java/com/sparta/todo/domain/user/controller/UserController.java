@@ -5,15 +5,14 @@ import static com.sparta.todo.global.message.UserMessage.LOGIN_SUCCESS;
 import static com.sparta.todo.global.message.UserMessage.SIGN_UP_API;
 import static com.sparta.todo.global.message.UserMessage.SIGN_UP_SUCCESS;
 
-import com.sparta.todo.global.commonDto.ResponseDto;
-import com.sparta.todo.domain.user.dto.SignupRequestDto;
-import com.sparta.todo.domain.user.service.UserService;
 import com.sparta.todo.domain.user.dto.LoginRequestDto;
+import com.sparta.todo.domain.user.dto.SignupRequestDto;
 import com.sparta.todo.domain.user.dto.SignupResponseDto;
+import com.sparta.todo.domain.user.service.UserService;
+import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,8 @@
 package com.sparta.todo.global.interceptor;
 
+import com.sparta.todo.domain.user.entity.User;
 import com.sparta.todo.global.jwt.JwtUtil;
+import com.sparta.todo.global.validation.Validation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class AuthenticationInterceptor implements HandlerInterceptor {
     private final JwtUtil jwtUtil;
+    private final Validation validation;
 
     @Override
     public boolean preHandle(
@@ -23,7 +26,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         String tokenValue = jwtUtil.getJwtFromRequest(request);
         String userInfo = jwtUtil.getUserInfoFromToken(tokenValue);
-        request.setAttribute("userInfo", userInfo);
+
+        request.setAttribute("User", validation.userBy(userInfo));
 
         return true;
     }

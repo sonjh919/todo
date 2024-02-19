@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -48,11 +47,10 @@ public class TodoController {
     @PostMapping("v1/todos")
     @Operation(summary = CREATE_TODO_API)
     public ResponseEntity<ResponseDto<TodoResponseDto>> createTodo(
-        @RequestAttribute("userInfo") String userInfo,
+        @RequestAttribute("User") User user,
         @RequestBody @Valid TodoRequestDto requestDto) {
 
-        System.out.println(userInfo);
-        TodoResponseDto todoResponseDto = todoService.createTodo("asdf", requestDto);
+        TodoResponseDto todoResponseDto = todoService.createTodo(user, requestDto);
 
         return ResponseEntity.created(createUri(todoResponseDto.getTodoId()))
             .body(ResponseDto.<TodoResponseDto>builder()
@@ -86,14 +84,14 @@ public class TodoController {
     @PatchMapping("v1/todos/{id}")
     @Operation(summary = PATCH_TODO_API, description = PATCH_TODO_DESCRIPTION)
     public ResponseEntity<ResponseDto<TodoResponseDto>> updateTodo(
-        @RequestHeader(value = "Authorization") String accessToken,
+        @RequestAttribute("User") User user,
         @RequestBody @Valid TodoRequestDto requestDto,
         @PathVariable Long id,
         @RequestParam(required = false) Boolean isCompleted,
         @RequestParam(required = false) Boolean isPrivate
     ) {
 
-        TodoResponseDto todoResponseDto = todoService.updateTodo(accessToken, requestDto, id,
+        TodoResponseDto todoResponseDto = todoService.updateTodo(user, requestDto, id,
             isCompleted, isPrivate);
 
         return ResponseEntity.created(updateUri())
@@ -106,11 +104,11 @@ public class TodoController {
     @DeleteMapping("v1/todos/{id}")
     @Operation(summary = DELETE_TODO_API)
     public ResponseEntity<Void> deleteTodo(
-        @RequestHeader(value = "Authorization") String accessToken,
+        @RequestAttribute("User") User user,
         @PathVariable Long id
     ) {
 
-        todoService.deleteTodo(accessToken, id);
+        todoService.deleteTodo(user, id);
 
         return ResponseEntity.noContent().build();
     }

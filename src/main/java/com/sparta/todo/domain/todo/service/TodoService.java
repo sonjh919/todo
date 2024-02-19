@@ -24,14 +24,10 @@ public class TodoService {
     private final Validation validation;
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
 
     @Transactional
-    public TodoResponseDto createTodo(String accessToken, TodoRequestDto requestDto) {
-        String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = validation.userBy(author);
+    public TodoResponseDto createTodo(User user, TodoRequestDto requestDto) {
         Todo todo = new Todo(requestDto, user);
-
         return new TodoResponseDto(todoRepository.save(todo));
     }
 
@@ -52,9 +48,9 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponseDto updateTodo(String accessToken, TodoRequestDto requestDto, Long id,
+    public TodoResponseDto updateTodo(User user, TodoRequestDto requestDto, Long id,
         Boolean isCompleted, Boolean isPrivate) {
-        Todo todo = getTodoByTokenAndId(accessToken, id);
+        Todo todo = getTodoByAuthor(user, id);
 
         todo = setTodoComplete(todo, isCompleted);
         todo = setTodoPrivate(todo, isPrivate);
@@ -64,16 +60,10 @@ public class TodoService {
     }
 
     @Transactional
-    public void deleteTodo(String accessToken, Long id) {
-        Todo todo = getTodoByTokenAndId(accessToken, id);
+    public void deleteTodo(User user, Long id) {
+        Todo todo = getTodoByAuthor(user, id);
 
         todoRepository.delete(todo);
-    }
-
-    private Todo getTodoByTokenAndId(String accessToken, Long id) {
-        String author = jwtUtil.getUserInfoFromToken(accessToken);
-        User user = validation.userBy(author);
-        return getTodoByAuthor(user, id);
     }
 
     private Todo getTodoByAuthor(User user, Long id) {

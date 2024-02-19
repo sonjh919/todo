@@ -55,7 +55,7 @@ public class JwtUtil {
     }
 
     public String getUserInfoFromToken(String bearerToken) {
-        String token = getJwtFromHeader(bearerToken);
+        String token = substringToken(bearerToken);
         if (validateToken((token))) {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody()
                 .getSubject();
@@ -63,14 +63,7 @@ public class JwtUtil {
         throw new IllegalArgumentException("오류");
     }
 
-    private String getJwtFromHeader(String bearerToken) {
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    public String substringToken(final String tokenValue) {
+    private String substringToken(String tokenValue) {
         if (!StringUtils.hasText(tokenValue) || !tokenValue.startsWith(BEARER_PREFIX)) {
             throw new JwtException(INVALID_JWT_SIGNATURE);
         }
@@ -82,7 +75,7 @@ public class JwtUtil {
         return request.getHeader(AUTHORIZATION_HEADER);
     }
 
-    public boolean validateToken(String token) {
+    private boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
