@@ -13,7 +13,7 @@
 2024-02-14 이후로 서버 비용 이슈로 배포를 중단하였습니다.
 
 ## Prerequisites
-+ JDK amazoncorretto 17
++ JDK amazoncorretto 17.0.5
 + Spring Boot 3.2.2
 + Springdoc 2.2.0
 + Gradle 8.5
