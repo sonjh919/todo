@@ -59,7 +59,7 @@ public class TodoController {
                 .build());
     }
 
-    @GetMapping("v1/todos/{id}")
+    @GetMapping("v2/todos/{id}")
     @Operation(summary = GET_TODO_API)
     public ResponseEntity<ResponseDto<GetTodoResponseDto>> getTodoById(@PathVariable Long id) {
 
@@ -70,7 +70,7 @@ public class TodoController {
                 .build());
     }
 
-    @GetMapping("v1/todos")
+    @GetMapping("v2/todos")
     @Operation(summary = SEARCH_TODOS_API, description = SEARCH_TODOS_DESCRIPTION)
     public ResponseEntity<ResponseDto<List<GetTodoListResponseDto>>> getTodos(@RequestParam(required = false) String title) {
 
