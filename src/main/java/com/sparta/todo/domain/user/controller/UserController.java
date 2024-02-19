@@ -29,7 +29,6 @@ public class UserController {
     @PostMapping("/v1/users/signup")
     @Operation(summary = SIGN_UP_API)
     public ResponseEntity<ResponseDto<SignupResponseDto>> signup(@RequestBody @Valid SignupRequestDto requestDto) {
-
         return ResponseEntity.ok()
             .body(ResponseDto.<SignupResponseDto>builder()
                 .message(SIGN_UP_SUCCESS)

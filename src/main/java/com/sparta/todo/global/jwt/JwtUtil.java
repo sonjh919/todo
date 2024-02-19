@@ -70,12 +70,16 @@ public class JwtUtil {
         return null;
     }
 
-    public String getJwtFromHeader2(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
+    public String substringToken(final String tokenValue) {
+        if (!StringUtils.hasText(tokenValue) || !tokenValue.startsWith(BEARER_PREFIX)) {
+            throw new JwtException(INVALID_JWT_SIGNATURE);
         }
-        return null;
+
+        return tokenValue.substring(7);
+    }
+
+    public String getJwtFromRequest(HttpServletRequest request) {
+        return request.getHeader(AUTHORIZATION_HEADER);
     }
 
     public boolean validateToken(String token) {

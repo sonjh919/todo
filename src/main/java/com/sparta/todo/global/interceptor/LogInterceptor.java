@@ -22,7 +22,7 @@ public class LogInterceptor implements HandlerInterceptor {
         ModelAndView modelAndView) throws Exception {
         String requestURI = request.getRequestURI();
         int status = response.getStatus();
-        log.info("[API RESPONSE] " + requestURI + " : " + status);
+        log.info("[API RESPONSE] " + requestURI + ": " + status);
 
     }
 }
