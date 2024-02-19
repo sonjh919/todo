@@ -26,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/v1/user/signup")
+    @PostMapping("/v1/users/signup")
     @Operation(summary = SIGN_UP_API)
     public ResponseEntity<ResponseDto<SignupResponseDto>> signup(@RequestBody @Valid SignupRequestDto requestDto) {
 
@@ -37,7 +37,7 @@ public class UserController {
                 .build());
     }
 
-    @PostMapping("/v1/user/login")
+    @PostMapping("/v1/users/login")
     @Operation(summary = LOGIN_API)
     public ResponseEntity<ResponseDto<Void>> login(@RequestBody LoginRequestDto requestDto) {
 
