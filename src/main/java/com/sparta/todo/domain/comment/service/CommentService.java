@@ -4,7 +4,8 @@ import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.comment.dto.CommentResponseDto;
 import com.sparta.todo.domain.comment.entity.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
-import com.sparta.todo.domain.todo.entity.Todo;
+import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.validation.Validation;
 import java.util.NoSuchElementException;
@@ -25,8 +26,9 @@ public class CommentService {
         CommentRequestDto requestDto) {
 
         Todo todo = validation.findTodoBy(todoId);
+        TodoEntity todoEntity = new TodoEntity();
 
-        Comment comment = new Comment(requestDto, todo, userEntity);
+        Comment comment = new Comment(requestDto, todoEntity, userEntity);
         return new CommentResponseDto(commentRepository.save(comment));
     }
 
@@ -36,8 +38,9 @@ public class CommentService {
         Comment comment = validation.findCommentBy(commentId);
 
         Todo todo = validation.findTodoBy(todoId);
+        TodoEntity todoEntity = new TodoEntity();
 
-        validateCommentByTodoId(todo, comment);
+        validateCommentByTodoId(todoEntity, comment);
         validateAuthorByComment(userEntity, comment);
 
         comment.update(requestDto);
@@ -56,8 +59,8 @@ public class CommentService {
         }
     }
 
-    private void validateCommentByTodoId(Todo todo, Comment comment) {
-        if (!todo.getTodoId().equals(comment.getTodo().getTodoId())) {
+    private void validateCommentByTodoId(TodoEntity todoEntity, Comment comment) {
+        if (!todoEntity.getTodoId().equals(comment.getTodoEntity().getTodoId())) {
             throw new NoSuchElementException("할일카드에 해당 댓글이 존재하지 않습니다.");
         }
     }

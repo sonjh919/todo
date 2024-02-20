@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,11 +28,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TB_TODO")
 @NoArgsConstructor
-public class Todo {
+@AllArgsConstructor
+public class TodoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long TodoId;
+    private Long todoId;
 
     @Column(name = "TITLE", length = 50)
     private String title;
@@ -54,7 +56,7 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    public Todo(TodoRequestDto requestDto, UserEntity userEntity) {
+    public TodoEntity(TodoRequestDto requestDto, UserEntity userEntity) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.isCompleted = false;
@@ -62,8 +64,4 @@ public class Todo {
         this.userEntity = userEntity;
     }
 
-    public void update(TodoRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-    }
 }

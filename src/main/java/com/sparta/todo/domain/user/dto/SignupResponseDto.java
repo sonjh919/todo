@@ -2,6 +2,7 @@ package com.sparta.todo.domain.user.dto;
 
 import com.sparta.todo.domain.user.entity.UserEntity;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class SignupResponseDto {

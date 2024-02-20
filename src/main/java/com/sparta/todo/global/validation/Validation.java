@@ -3,7 +3,7 @@ package com.sparta.todo.global.validation;
 import com.sparta.todo.domain.comment.entity.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
 import com.sparta.todo.domain.todo.model.Todo;
-import com.sparta.todo.domain.todo.repository.TodoRepository;
+import com.sparta.todo.domain.todo.repository.TodoJpaRepository;
 import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.domain.user.repository.UserJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class Validation {
 
     private final UserJpaRepository userJpaRepository;
-    private final TodoRepository todoRepository;
+    private final TodoJpaRepository todoJpaRepository;
     private final CommentRepository commentRepository;
 
     public User userBy(String userName) {
@@ -26,7 +26,7 @@ public class Validation {
     }
 
     public Todo findTodoBy(Long id) {
-        return Todo.from(todoRepository.findById(id).orElseThrow(() ->
+        return Todo.from(todoJpaRepository.findById(id).orElseThrow(() ->
             new EntityNotFoundException("선택한 일정은 존재하지 않습니다.")
         ));
     }

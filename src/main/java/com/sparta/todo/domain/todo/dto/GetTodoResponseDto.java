@@ -1,13 +1,11 @@
 package com.sparta.todo.domain.todo.dto;
 
-import com.sparta.todo.domain.todo.entity.Todo;
+import com.sparta.todo.domain.todo.entity.TodoEntity;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
 public class GetTodoResponseDto {
 
@@ -19,7 +17,7 @@ public class GetTodoResponseDto {
     private boolean isCompleted;
     private boolean isPrivate;
 
-    public GetTodoResponseDto(Todo todo) {
+    public GetTodoResponseDto(TodoEntity todo) {
         this.id = todo.getTodoId();
         this.title = todo.getTitle();
         this.content = todo.getContent();

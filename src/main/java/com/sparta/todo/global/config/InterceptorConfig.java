@@ -24,7 +24,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthenticationInterceptor(jwtUtil, validation))
             .order(2)    // 적용할 필터 순서 설정
             .addPathPatterns("/**")
-            .excludePathPatterns("/v1/users/**", "/swagger-ui/**", "/v3/api-docs/**"); // 인터셉터에서 제외할 패턴
+            .excludePathPatterns("/v1/users/**", "/v2/todos/**", "/swagger-ui/**", "/v3/api-docs/**"); // 인터셉터에서 제외할 패턴
 
     }
 }

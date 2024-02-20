@@ -1,7 +1,7 @@
 package com.sparta.todo.domain.comment.entity;
 
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
-import com.sparta.todo.domain.todo.entity.Todo;
+import com.sparta.todo.domain.todo.entity.TodoEntity;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,15 +37,15 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Todo todo;
+    private TodoEntity todoEntity;
 
     @Column(name = "COMMENT", length = 512)
     private String comment;
 
-    public Comment(CommentRequestDto requestDto, Todo todo, UserEntity userEntity) {
+    public Comment(CommentRequestDto requestDto, TodoEntity todoEntity, UserEntity userEntity) {
         this.comment = requestDto.getComment();
         this.userEntity = userEntity;
-        this.todo = todo;
+        this.todoEntity = todoEntity;
     }
 
     public void update(CommentRequestDto requestDto) {
