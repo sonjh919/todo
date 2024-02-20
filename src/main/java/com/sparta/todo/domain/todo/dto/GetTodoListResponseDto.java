@@ -1,7 +1,7 @@
 package com.sparta.todo.domain.todo.dto;
 
 import com.sparta.todo.domain.todo.entity.Todo;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import java.util.Comparator;
 import java.util.List;
 import lombok.Getter;
@@ -15,9 +15,9 @@ public class GetTodoListResponseDto {
     private List<GetTodoResponseDto> todos;
 
 
-    public GetTodoListResponseDto(User user) {
-        this.author = user.getUserName();
-        this.todos = user.getTodos().stream()
+    public GetTodoListResponseDto(UserEntity userEntity) {
+        this.author = userEntity.getUserName();
+        this.todos = userEntity.getTodos().stream()
             .sorted(Comparator.comparing(Todo::getDateCreated).reversed())
             .map(GetTodoResponseDto::new)
             .toList();

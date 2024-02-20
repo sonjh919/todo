@@ -1,6 +1,5 @@
 package com.sparta.todo.global.interceptor;
 
-import com.sparta.todo.domain.user.entity.User;
 import com.sparta.todo.global.jwt.JwtUtil;
 import com.sparta.todo.global.validation.Validation;
 import jakarta.servlet.http.HttpServletRequest;

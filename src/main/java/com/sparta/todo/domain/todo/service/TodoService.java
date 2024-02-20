@@ -5,9 +5,8 @@ import com.sparta.todo.domain.todo.dto.GetTodoResponseDto;
 import com.sparta.todo.domain.todo.dto.TodoRequestDto;
 import com.sparta.todo.domain.todo.dto.TodoResponseDto;
 import com.sparta.todo.domain.todo.entity.Todo;
-import com.sparta.todo.global.jwt.JwtUtil;
 import com.sparta.todo.domain.todo.repository.TodoRepository;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.domain.user.repository.UserRepository;
 import com.sparta.todo.global.validation.Validation;
 import java.util.List;
@@ -26,8 +25,8 @@ public class TodoService {
     private final UserRepository userRepository;
 
     @Transactional
-    public TodoResponseDto createTodo(User user, TodoRequestDto requestDto) {
-        Todo todo = new Todo(requestDto, user);
+    public TodoResponseDto createTodo(UserEntity userEntity, TodoRequestDto requestDto) {
+        Todo todo = new Todo(requestDto, userEntity);
         return new TodoResponseDto(todoRepository.save(todo));
     }
 
@@ -37,8 +36,8 @@ public class TodoService {
     }
 
     public List<GetTodoListResponseDto> getTodos(String title) {
-        List<User> users = userRepository.findAll();
-        List<GetTodoListResponseDto> todoList = users.stream().map(GetTodoListResponseDto::new)
+        List<UserEntity> userEntities = userRepository.findAll();
+        List<GetTodoListResponseDto> todoList = userEntities.stream().map(GetTodoListResponseDto::new)
             .toList();
 
         if (title == null) {
@@ -48,9 +47,9 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponseDto updateTodo(User user, TodoRequestDto requestDto, Long id,
+    public TodoResponseDto updateTodo(UserEntity userEntity, TodoRequestDto requestDto, Long id,
         Boolean isCompleted, Boolean isPrivate) {
-        Todo todo = getTodoByAuthor(user, id);
+        Todo todo = getTodoByAuthor(userEntity, id);
 
         todo = setTodoComplete(todo, isCompleted);
         todo = setTodoPrivate(todo, isPrivate);
@@ -60,14 +59,14 @@ public class TodoService {
     }
 
     @Transactional
-    public void deleteTodo(User user, Long id) {
-        Todo todo = getTodoByAuthor(user, id);
+    public void deleteTodo(UserEntity userEntity, Long id) {
+        Todo todo = getTodoByAuthor(userEntity, id);
 
         todoRepository.delete(todo);
     }
 
-    private Todo getTodoByAuthor(User user, Long id) {
-        return user.getTodos().stream()
+    private Todo getTodoByAuthor(UserEntity userEntity, Long id) {
+        return userEntity.getTodos().stream()
             .filter(todos -> todos.getTodoId().equals(id))
             .findFirst()
             .orElseThrow(() -> new NoSuchElementException("작성자만 삭제/수정할 수 있습니다."));

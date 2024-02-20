@@ -1,18 +1,16 @@
 package com.sparta.todo.domain.user.dto;
 
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class SignupResponseDto {
 
-    private Long id;
-    private String userName;
+    private final Long id;
+    private final String userName;
 
-    public SignupResponseDto(User user) {
-        this.id = user.getUserId();
-        this.userName = user.getUserName();
+    public SignupResponseDto(UserEntity userEntity) {
+        this.id = userEntity.getUserId();
+        this.userName = userEntity.getUserName();
     }
 }

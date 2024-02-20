@@ -21,7 +21,7 @@ public class TodoResponseDto {
         this.todoId = todo.getTodoId();
         this.title = todo.getTitle();
         this.content = todo.getContent();
-        this.author = todo.getUser().getUserName();
+        this.author = todo.getUserEntity().getUserName();
         this.dateCreated = todo.getDateCreated();
         this.isCompleted = todo.isCompleted();
         this.isPrivate = todo.isPrivate();

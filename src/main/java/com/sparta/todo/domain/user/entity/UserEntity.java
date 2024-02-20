@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "TB_USER")
 @NoArgsConstructor
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +32,10 @@ public class User {
     @Column(nullable = false, unique = true, name = "PASSWORD")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     private List<Todo> todos = new ArrayList<>();
 
-    public User(String userName, String password) {
+    public UserEntity(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }

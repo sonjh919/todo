@@ -5,7 +5,7 @@ import com.sparta.todo.domain.comment.dto.CommentResponseDto;
 import com.sparta.todo.domain.comment.entity.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
 import com.sparta.todo.domain.todo.entity.Todo;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.validation.Validation;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +21,16 @@ public class CommentService {
     private final Validation validation;
     private final CommentRepository commentRepository;
 
-    public CommentResponseDto createComment(User user, Long todoId,
+    public CommentResponseDto createComment(UserEntity userEntity, Long todoId,
         CommentRequestDto requestDto) {
 
         Todo todo = validation.findTodoBy(todoId);
 
-        Comment comment = new Comment(requestDto, todo, user);
+        Comment comment = new Comment(requestDto, todo, userEntity);
         return new CommentResponseDto(commentRepository.save(comment));
     }
 
-    public CommentResponseDto updateComment(User user, Long todoId, Long commentId,
+    public CommentResponseDto updateComment(UserEntity userEntity, Long todoId, Long commentId,
         CommentRequestDto requestDto) {
 
         Comment comment = validation.findCommentBy(commentId);
@@ -38,7 +38,7 @@ public class CommentService {
         Todo todo = validation.findTodoBy(todoId);
 
         validateCommentByTodoId(todo, comment);
-        validateAuthorByComment(user, comment);
+        validateAuthorByComment(userEntity, comment);
 
         comment.update(requestDto);
         return new CommentResponseDto(comment);
@@ -50,8 +50,8 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private void validateAuthorByComment(User user, Comment comment) {
-        if (!user.getUserName().equals(comment.getUser().getUserName())) {
+    private void validateAuthorByComment(UserEntity userEntity, Comment comment) {
+        if (!userEntity.getUserName().equals(comment.getUserEntity().getUserName())) {
             throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
         }
     }

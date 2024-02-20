@@ -2,7 +2,7 @@ package com.sparta.todo.domain.comment.entity;
 
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.todo.entity.Todo;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +32,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private UserEntity userEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id")
@@ -42,9 +42,9 @@ public class Comment {
     @Column(name = "COMMENT", length = 512)
     private String comment;
 
-    public Comment(CommentRequestDto requestDto, Todo todo, User user) {
+    public Comment(CommentRequestDto requestDto, Todo todo, UserEntity userEntity) {
         this.comment = requestDto.getComment();
-        this.user = user;
+        this.userEntity = userEntity;
         this.todo = todo;
     }
 

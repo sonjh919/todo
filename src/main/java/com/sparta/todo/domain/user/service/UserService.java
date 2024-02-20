@@ -1,16 +1,15 @@
 package com.sparta.todo.domain.user.service;
 
 import com.sparta.todo.domain.user.dto.SignupRequestDto;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
+import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.global.jwt.JwtUtil;
 import com.sparta.todo.domain.user.dto.LoginRequestDto;
 import com.sparta.todo.domain.user.dto.SignupResponseDto;
 import com.sparta.todo.domain.user.repository.UserRepository;
 import com.sparta.todo.global.validation.Validation;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,11 +29,12 @@ public class UserService {
         String username = requestDto.getUserName();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-        validateUserDuplicate(userRepository.findByUserName(username));
+        validateUserDuplicate(username);
 
-        User user = new User(username, password);
-        userRepository.save(user);
-        return new SignupResponseDto(user);
+        UserEntity userEntity = new UserEntity(username, password);
+        userRepository.save(userEntity);
+
+        return new SignupResponseDto(userEntity);
     }
 
     public String login(LoginRequestDto requestDto) {
@@ -42,19 +42,13 @@ public class UserService {
         String password = requestDto.getPassword();
 
         User user = validation.userBy(userName);
-        validatePassword(user, password);
+        user.validatePassword(password, passwordEncoder);
 
-        return jwtUtil.createToken(user.getUserName());
+        return user.createToken(jwtUtil);
     }
 
-    private void validatePassword(User user, String password) {
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("패스워드를 잘못 입력하였습니다.");
-        }
-    }
-
-    private void validateUserDuplicate(Optional<User> checkUsername) {
-        if (checkUsername.isPresent()) {
+    private void validateUserDuplicate(String username) {
+        if (userRepository.findByUserName(username).isPresent()) {
             throw new DuplicateKeyException("중복된 사용자가 존재합니다.");
         }
     }

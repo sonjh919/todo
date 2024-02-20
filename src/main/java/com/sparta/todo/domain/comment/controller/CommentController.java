@@ -9,7 +9,7 @@ import static com.sparta.todo.global.message.CommentMessage.PATCH_COMMENT_SUCCES
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.comment.dto.CommentResponseDto;
 import com.sparta.todo.domain.comment.service.CommentService;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -34,11 +34,11 @@ public class CommentController {
     @PostMapping("v1/todos/{todoId}/comments")
     @Operation(summary = CREATE_COMMENT_API)
     public ResponseEntity<ResponseDto<CommentResponseDto>> createComment(
-        @RequestAttribute("User") User user,
+        @RequestAttribute("User") UserEntity userEntity,
         @PathVariable Long todoId,
         @RequestBody @Valid CommentRequestDto requestDto) {
 
-        CommentResponseDto commentResponseDto = commentService.createComment(user, todoId,
+        CommentResponseDto commentResponseDto = commentService.createComment(userEntity, todoId,
             requestDto);
 
         return ResponseEntity.created(createUri(commentResponseDto.getCommentId()))
@@ -51,13 +51,13 @@ public class CommentController {
     @PatchMapping("v1/todos/{todoId}/comments/{commentId}")
     @Operation(summary = PATCH_COMMENT_API)
     public ResponseEntity<ResponseDto<CommentResponseDto>> updateComment(
-        @RequestAttribute("User") User user,
+        @RequestAttribute("User") UserEntity userEntity,
         @PathVariable Long todoId,
         @PathVariable Long commentId,
         @RequestBody @Valid CommentRequestDto requestDto
     ) {
 
-        CommentResponseDto commentResponseDto = commentService.updateComment(user, todoId,
+        CommentResponseDto commentResponseDto = commentService.updateComment(userEntity, todoId,
             commentId, requestDto);
 
         return ResponseEntity.created(updateUri())

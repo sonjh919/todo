@@ -1,7 +1,7 @@
 package com.sparta.todo.domain.todo.entity;
 
 import com.sparta.todo.domain.todo.dto.TodoRequestDto;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -52,14 +52,14 @@ public class Todo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity userEntity;
 
-    public Todo(TodoRequestDto requestDto, User user) {
+    public Todo(TodoRequestDto requestDto, UserEntity userEntity) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.isCompleted = false;
         this.isPrivate = false;
-        this.user = user;
+        this.userEntity = userEntity;
     }
 
     public void update(TodoRequestDto requestDto) {

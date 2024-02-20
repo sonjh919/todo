@@ -17,7 +17,7 @@ import com.sparta.todo.domain.todo.dto.GetTodoResponseDto;
 import com.sparta.todo.domain.todo.dto.TodoRequestDto;
 import com.sparta.todo.domain.todo.dto.TodoResponseDto;
 import com.sparta.todo.domain.todo.service.TodoService;
-import com.sparta.todo.domain.user.entity.User;
+import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -47,10 +47,10 @@ public class TodoController {
     @PostMapping("v1/todos")
     @Operation(summary = CREATE_TODO_API)
     public ResponseEntity<ResponseDto<TodoResponseDto>> createTodo(
-        @RequestAttribute("User") User user,
+        @RequestAttribute("User") UserEntity userEntity,
         @RequestBody @Valid TodoRequestDto requestDto) {
 
-        TodoResponseDto todoResponseDto = todoService.createTodo(user, requestDto);
+        TodoResponseDto todoResponseDto = todoService.createTodo(userEntity, requestDto);
 
         return ResponseEntity.created(createUri(todoResponseDto.getTodoId()))
             .body(ResponseDto.<TodoResponseDto>builder()
@@ -84,14 +84,14 @@ public class TodoController {
     @PatchMapping("v1/todos/{id}")
     @Operation(summary = PATCH_TODO_API, description = PATCH_TODO_DESCRIPTION)
     public ResponseEntity<ResponseDto<TodoResponseDto>> updateTodo(
-        @RequestAttribute("User") User user,
+        @RequestAttribute("User") UserEntity userEntity,
         @RequestBody @Valid TodoRequestDto requestDto,
         @PathVariable Long id,
         @RequestParam(required = false) Boolean isCompleted,
         @RequestParam(required = false) Boolean isPrivate
     ) {
 
-        TodoResponseDto todoResponseDto = todoService.updateTodo(user, requestDto, id,
+        TodoResponseDto todoResponseDto = todoService.updateTodo(userEntity, requestDto, id,
             isCompleted, isPrivate);
 
         return ResponseEntity.created(updateUri())
@@ -104,11 +104,11 @@ public class TodoController {
     @DeleteMapping("v1/todos/{id}")
     @Operation(summary = DELETE_TODO_API)
     public ResponseEntity<Void> deleteTodo(
-        @RequestAttribute("User") User user,
+        @RequestAttribute("User") UserEntity userEntity,
         @PathVariable Long id
     ) {
 
-        todoService.deleteTodo(user, id);
+        todoService.deleteTodo(userEntity, id);
 
         return ResponseEntity.noContent().build();
     }
