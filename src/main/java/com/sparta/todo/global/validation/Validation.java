@@ -2,11 +2,10 @@ package com.sparta.todo.global.validation;
 
 import com.sparta.todo.domain.comment.entity.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.todo.repository.TodoRepository;
-import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.domain.user.model.User;
-import com.sparta.todo.domain.user.repository.UserRepository;
+import com.sparta.todo.domain.user.repository.UserJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -16,20 +15,20 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Validation {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
     private final TodoRepository todoRepository;
     private final CommentRepository commentRepository;
 
     public User userBy(String userName) {
-        return userRepository.findByUserName(userName).orElseThrow(
+        return User.from(userJpaRepository.findByUserName(userName).orElseThrow(
             () -> new NoSuchElementException("사용자를 찾을 수 없습니다.")
-        );
+        ));
     }
 
-    public TodoEntity findTodoBy(Long id) {
-        return todoRepository.findById(id).orElseThrow(() ->
+    public Todo findTodoBy(Long id) {
+        return Todo.from(todoRepository.findById(id).orElseThrow(() ->
             new EntityNotFoundException("선택한 일정은 존재하지 않습니다.")
-        );
+        ));
     }
 
     public Comment findCommentBy(Long id) {

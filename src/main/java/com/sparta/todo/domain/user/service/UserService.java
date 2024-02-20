@@ -1,15 +1,14 @@
 package com.sparta.todo.domain.user.service;
 
+import com.sparta.todo.domain.user.dto.LoginRequestDto;
 import com.sparta.todo.domain.user.dto.SignupRequestDto;
+import com.sparta.todo.domain.user.dto.SignupResponseDto;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.domain.user.model.User;
-import com.sparta.todo.global.jwt.JwtUtil;
-import com.sparta.todo.domain.user.dto.LoginRequestDto;
-import com.sparta.todo.domain.user.dto.SignupResponseDto;
 import com.sparta.todo.domain.user.repository.UserRepository;
+import com.sparta.todo.global.jwt.JwtUtil;
 import com.sparta.todo.global.validation.Validation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +27,7 @@ public class UserService {
     public SignupResponseDto signup(SignupRequestDto requestDto) {
         String username = requestDto.getUserName();
         String password = passwordEncoder.encode(requestDto.getPassword());
-
-        validateUserDuplicate(username);
+        userRepository.validateUserDuplicate(username);
 
         UserEntity userEntity = new UserEntity(username, password);
         userRepository.save(userEntity);
@@ -47,9 +45,4 @@ public class UserService {
         return user.createToken(jwtUtil);
     }
 
-    private void validateUserDuplicate(String username) {
-        if (userRepository.findByUserName(username).isPresent()) {
-            throw new DuplicateKeyException("중복된 사용자가 존재합니다.");
-        }
-    }
 }
