@@ -64,4 +64,8 @@ public class User {
             .findFirst()
             .orElseThrow(() -> new NoSuchElementException("작성자만 삭제/수정할 수 있습니다.")));
     }
+
+    public boolean validateByName(String userName) {
+        return this.userName.equals(userName);
+    }
 }

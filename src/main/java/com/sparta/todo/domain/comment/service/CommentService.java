@@ -2,15 +2,13 @@ package com.sparta.todo.domain.comment.service;
 
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.comment.dto.CommentResponseDto;
-import com.sparta.todo.domain.comment.entity.Comment;
+import com.sparta.todo.domain.comment.entity.CommentEntity;
+import com.sparta.todo.domain.comment.model.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
-import com.sparta.todo.domain.todo.entity.TodoEntity;
 import com.sparta.todo.domain.todo.model.Todo;
-import com.sparta.todo.domain.user.entity.UserEntity;
+import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.global.validation.Validation;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,46 +20,38 @@ public class CommentService {
     private final Validation validation;
     private final CommentRepository commentRepository;
 
-    public CommentResponseDto createComment(UserEntity userEntity, Long todoId,
+    public CommentResponseDto createComment(User user, Long todoId,
         CommentRequestDto requestDto) {
 
         Todo todo = validation.findTodoBy(todoId);
-        TodoEntity todoEntity = new TodoEntity();
 
-        Comment comment = new Comment(requestDto, todoEntity, userEntity);
-        return new CommentResponseDto(commentRepository.save(comment));
+        CommentEntity commentEntity = new CommentEntity(requestDto, todo, user);
+        commentRepository.save(commentEntity);
+
+        return Comment.from(commentEntity).responseDto();
     }
 
-    public CommentResponseDto updateComment(UserEntity userEntity, Long todoId, Long commentId,
+    public CommentResponseDto updateComment(User user, Long todoId, Long commentId,
         CommentRequestDto requestDto) {
 
         Comment comment = validation.findCommentBy(commentId);
-
         Todo todo = validation.findTodoBy(todoId);
-        TodoEntity todoEntity = new TodoEntity();
 
-        validateCommentByTodoId(todoEntity, comment);
-        validateAuthorByComment(userEntity, comment);
+        comment.validateBy(todo);
+        comment.validateBy(user);
 
         comment.update(requestDto);
-        return new CommentResponseDto(comment);
+        commentRepository.update(comment);
+
+        return comment.responseDto();
     }
 
     public void deleteComment(Long todoId, Long commentId) {
         Comment comment = validation.findCommentBy(commentId);
+
         validation.findTodoBy(todoId);
+
         commentRepository.delete(comment);
     }
 
-    private void validateAuthorByComment(UserEntity userEntity, Comment comment) {
-        if (!userEntity.getUserName().equals(comment.getUserEntity().getUserName())) {
-            throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
-        }
-    }
-
-    private void validateCommentByTodoId(TodoEntity todoEntity, Comment comment) {
-        if (!todoEntity.getTodoId().equals(comment.getTodoEntity().getTodoId())) {
-            throw new NoSuchElementException("할일카드에 해당 댓글이 존재하지 않습니다.");
-        }
-    }
 }

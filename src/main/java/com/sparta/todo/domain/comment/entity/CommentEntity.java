@@ -2,7 +2,9 @@ package com.sparta.todo.domain.comment.entity;
 
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
 import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.user.entity.UserEntity;
+import com.sparta.todo.domain.user.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,18 +14,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "TB_COMMENT")
 @NoArgsConstructor
-public class Comment {
+@AllArgsConstructor
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,10 +44,10 @@ public class Comment {
     @Column(name = "COMMENT", length = 512)
     private String comment;
 
-    public Comment(CommentRequestDto requestDto, TodoEntity todoEntity, UserEntity userEntity) {
+    public CommentEntity(CommentRequestDto requestDto, Todo todo, User user) {
         this.comment = requestDto.getComment();
-        this.userEntity = userEntity;
-        this.todoEntity = todoEntity;
+        this.userEntity = user.toEntity();
+        this.todoEntity = todo.toEntity();
     }
 
     public void update(CommentRequestDto requestDto) {

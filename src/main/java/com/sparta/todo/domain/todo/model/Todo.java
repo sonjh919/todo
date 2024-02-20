@@ -74,4 +74,8 @@ public class Todo {
             isPrivate
         );
     }
+
+    public boolean validateById(Long todoId) {
+        return this.todoId.equals(todoId);
+    }
 }

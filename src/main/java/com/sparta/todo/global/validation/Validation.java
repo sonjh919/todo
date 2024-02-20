@@ -1,7 +1,8 @@
 package com.sparta.todo.global.validation;
 
-import com.sparta.todo.domain.comment.entity.Comment;
-import com.sparta.todo.domain.comment.repository.CommentRepository;
+import com.sparta.todo.domain.comment.entity.CommentEntity;
+import com.sparta.todo.domain.comment.model.Comment;
+import com.sparta.todo.domain.comment.repository.CommentJpaRepository;
 import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.todo.repository.TodoJpaRepository;
 import com.sparta.todo.domain.user.model.User;
@@ -17,7 +18,7 @@ public class Validation {
 
     private final UserJpaRepository userJpaRepository;
     private final TodoJpaRepository todoJpaRepository;
-    private final CommentRepository commentRepository;
+    private final CommentJpaRepository commentJpaRepository;
 
     public User userBy(String userName) {
         return User.from(userJpaRepository.findByUserName(userName).orElseThrow(
@@ -32,9 +33,9 @@ public class Validation {
     }
 
     public Comment findCommentBy(Long id) {
-        return commentRepository.findById(id).orElseThrow(
+        return Comment.from(commentJpaRepository.findById(id).orElseThrow(
             () -> new NoSuchElementException("해당 댓글은 존재하지 않습니다.")
-        );
+        ));
     }
 
 

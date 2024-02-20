@@ -50,6 +50,7 @@ public class TodoService {
     public TodoResponseDto updateTodo(User user, TodoRequestDto requestDto, Long id,
         Boolean isCompleted, Boolean isPrivate) {
         Todo todo = user.getTodoBy(id);
+
         todo.update(isCompleted, isPrivate);
         todoRepository.update(todo);
 
