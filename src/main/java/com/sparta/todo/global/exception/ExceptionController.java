@@ -27,7 +27,6 @@ public class ExceptionController {
         NoSuchElementException.class,
         BadCredentialsException.class,
         EntityNotFoundException.class,
-        JwtException.class,
         AccessDeniedException.class
     })
     public ResponseEntity<ExceptionDto> handleBadRequestException(Exception e) {
