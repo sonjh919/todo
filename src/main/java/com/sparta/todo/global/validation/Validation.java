@@ -2,7 +2,7 @@ package com.sparta.todo.global.validation;
 
 import com.sparta.todo.domain.comment.entity.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
-import com.sparta.todo.domain.todo.entity.Todo;
+import com.sparta.todo.domain.todo.entity.TodoEntity;
 import com.sparta.todo.domain.todo.repository.TodoRepository;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.domain.user.model.User;
@@ -21,14 +21,12 @@ public class Validation {
     private final CommentRepository commentRepository;
 
     public User userBy(String userName) {
-        UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow(
+        return userRepository.findByUserName(userName).orElseThrow(
             () -> new NoSuchElementException("사용자를 찾을 수 없습니다.")
         );
-
-        return User.from(userEntity);
     }
 
-    public Todo findTodoBy(Long id) {
+    public TodoEntity findTodoBy(Long id) {
         return todoRepository.findById(id).orElseThrow(() ->
             new EntityNotFoundException("선택한 일정은 존재하지 않습니다.")
         );
