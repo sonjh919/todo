@@ -1,6 +1,6 @@
 package com.sparta.todo.domain.user.entity;
 
-import com.sparta.todo.domain.todo.entity.Todo;
+import com.sparta.todo.domain.todo.entity.TodoEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "TB_USER")
 @NoArgsConstructor
 public class UserEntity {
@@ -33,7 +31,7 @@ public class UserEntity {
     private String password;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
-    private List<Todo> todos = new ArrayList<>();
+    private List<TodoEntity> todoEntities = new ArrayList<>();
 
     public UserEntity(String userName, String password) {
         this.userName = userName;

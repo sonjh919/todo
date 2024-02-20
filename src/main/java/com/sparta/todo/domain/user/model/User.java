@@ -3,11 +3,9 @@ package com.sparta.todo.domain.user.model;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.jwt.JwtUtil;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Getter
 @AllArgsConstructor
 public class User {
 
