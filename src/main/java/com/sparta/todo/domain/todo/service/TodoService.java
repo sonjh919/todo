@@ -49,7 +49,7 @@ public class TodoService {
         Boolean isCompleted, Boolean isPrivate) {
         Todo todo = user.getTodoBy(id);
 
-        todo.update(isCompleted, isPrivate);
+        todo.update(requestDto, isCompleted, isPrivate);
         todoRepository.update(todo);
 
         return todo.responseDto();

@@ -1,6 +1,7 @@
 package com.sparta.todo.domain.todo.model;
 
 import com.sparta.todo.domain.todo.dto.GetTodoResponseDto;
+import com.sparta.todo.domain.todo.dto.TodoRequestDto;
 import com.sparta.todo.domain.todo.dto.TodoResponseDto;
 import com.sparta.todo.domain.todo.entity.TodoEntity;
 import com.sparta.todo.domain.user.entity.UserEntity;
@@ -42,7 +43,10 @@ public class Todo {
         );
     }
 
-    public void update(Boolean isCompleted, Boolean isPrivate) {
+    public void update(TodoRequestDto requestDto, Boolean isCompleted, Boolean isPrivate) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+
         if (isCompleted != null) {
             this.isCompleted = isCompleted;
         }
