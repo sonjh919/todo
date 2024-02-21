@@ -7,7 +7,6 @@ import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.domain.user.repository.UserRepository;
 import com.sparta.todo.global.jwt.JwtUtil;
-import com.sparta.todo.global.validation.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final Validation validation;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -39,7 +37,7 @@ public class UserService {
         String userName = requestDto.getUserName();
         String password = requestDto.getPassword();
 
-        User user = validation.userBy(userName);
+        User user = userRepository.userBy(userName);
         user.validatePassword(password, passwordEncoder);
 
         return user.createToken(jwtUtil);

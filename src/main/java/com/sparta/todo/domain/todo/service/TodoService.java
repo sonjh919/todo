@@ -9,7 +9,6 @@ import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.todo.repository.TodoRepository;
 import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.domain.user.repository.UserRepository;
-import com.sparta.todo.global.validation.Validation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TodoService {
 
-    private final Validation validation;
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
 
@@ -32,7 +30,7 @@ public class TodoService {
     }
 
     public GetTodoResponseDto getTodoById(Long id) {
-        Todo todo = validation.findTodoBy(id);
+        Todo todo = todoRepository.findTodoBy(id);
         return todo.ResponseDto();
     }
 

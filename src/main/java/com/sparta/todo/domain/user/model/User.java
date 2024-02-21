@@ -39,6 +39,8 @@ public class User {
     }
 
     public void validatePassword(String password, PasswordEncoder passwordEncoder) {
+        System.out.println("password = " + password);
+        System.out.println("this.password = " + this.password);
         if (!passwordEncoder.matches(password, this.password)) {
             throw new BadCredentialsException("패스워드를 잘못 입력하였습니다.");
         }

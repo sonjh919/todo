@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class SignupRequestDto {
 
     @NotBlank(message = "아이디는 필수로 입력해야 합니다.")
