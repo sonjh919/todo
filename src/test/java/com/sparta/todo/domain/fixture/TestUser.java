@@ -26,6 +26,23 @@ public class TestUser extends User {
         );
     }
 
+    public TestUser(Long userId){
+        super(
+            userId,
+            "sjh",
+            "12345678",
+            List.of(new Todo(
+                1L,
+                "타이틀",
+                "내용",
+                LocalDateTime.now(),
+                true,
+                true,
+                new UserEntity()
+            ).toEntity())
+        );
+    }
+
     public TestUser(Long userId, List<TestTodo> testTodos){
         super(
             userId,

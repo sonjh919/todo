@@ -28,11 +28,6 @@ public class MockTodoRepository implements TodoRepository {
     }
 
     @Override
-    public void delete(Todo todo) {
-        store.remove((Long)ReflectionTestUtils.getField(todo, "todoId"));
-    }
-
-    @Override
     public void update(Todo todo) {
         TodoEntity todoEntity = store.get((Long)ReflectionTestUtils.getField(todo, "todoId"));
 
@@ -40,5 +35,11 @@ public class MockTodoRepository implements TodoRepository {
         ReflectionTestUtils.setField(todoEntity, "content", ReflectionTestUtils.getField(todo, "content"));
         ReflectionTestUtils.setField(todoEntity, "isCompleted", ReflectionTestUtils.getField(todo, "isCompleted"));
         ReflectionTestUtils.setField(todoEntity, "isPrivate", ReflectionTestUtils.getField(todo, "isPrivate"));
+    }
+
+
+    @Override
+    public void delete(Todo todo) {
+        store.remove((Long)ReflectionTestUtils.getField(todo, "todoId"));
     }
 }
