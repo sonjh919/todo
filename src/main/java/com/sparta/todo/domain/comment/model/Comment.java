@@ -51,7 +51,7 @@ public class Comment {
     }
 
     public void validateBy(User user) {
-        if (!user.validateByName(userEntity.getUserName())) {
+        if (!user.validateById(userEntity.getUserId())) {
             throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
         }
     }
