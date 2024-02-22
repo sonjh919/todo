@@ -3,7 +3,7 @@ name: todo-to-beanstalk
 on:
   push:
     branches:
-      - master
+      - none
 
 jobs:
   build:
