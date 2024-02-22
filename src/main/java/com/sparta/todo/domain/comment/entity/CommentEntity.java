@@ -49,8 +49,4 @@ public class CommentEntity {
         this.userEntity = user.toEntity();
         this.todoEntity = todo.toEntity();
     }
-
-    public void update(CommentRequestDto requestDto) {
-        this.comment = requestDto.getComment();
-    }
 }

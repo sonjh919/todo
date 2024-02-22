@@ -46,10 +46,12 @@ public class CommentService {
         return comment.responseDto();
     }
 
-    public void deleteComment(Long todoId, Long commentId) {
+    public void deleteComment(User user, Long todoId, Long commentId) {
         Comment comment = commentRepository.findCommentBy(commentId);
 
-        todoRepository.findTodoBy(todoId);
+        Todo todo = todoRepository.findTodoBy(todoId);
+        comment.validateBy(user);
+        comment.validateBy(todo);
 
         commentRepository.delete(comment);
     }

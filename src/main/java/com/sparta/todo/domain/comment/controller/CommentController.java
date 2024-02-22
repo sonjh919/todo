@@ -70,11 +70,12 @@ public class CommentController {
     @DeleteMapping("v1/todos/{todoId}/comments/{commentId}")
     @Operation(summary = DELETE_COMMENT_API)
     public ResponseEntity<Void> deleteTodo(
+        @RequestAttribute("User") User user,
         @PathVariable Long todoId,
         @PathVariable Long commentId
     ) {
 
-        commentService.deleteComment(todoId, commentId);
+        commentService.deleteComment(user, todoId, commentId);
 
         return ResponseEntity.noContent().build();
     }
