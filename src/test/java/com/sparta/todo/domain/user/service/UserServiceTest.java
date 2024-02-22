@@ -29,7 +29,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class UserServiceTest {
     private UserService userService;
-    private UserRepository userRepository;
     @Mock
     JwtUtil jwtUtil;
 
@@ -41,7 +40,7 @@ public class UserServiceTest {
 
     @BeforeEach
     void init(){
-        userRepository = new MockUserRepository();
+        UserRepository userRepository = new MockUserRepository();
         PasswordEncoder passwordEncoder = new MockPasswordEncoder();
 
         userService = new UserService(userRepository, passwordEncoder, jwtUtil);

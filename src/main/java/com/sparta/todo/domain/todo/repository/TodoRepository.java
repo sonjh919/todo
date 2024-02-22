@@ -6,27 +6,14 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-@Repository
-@RequiredArgsConstructor
-public class TodoRepository {
 
-    private final TodoJpaRepository todoJpaRepository;
+public interface TodoRepository {
 
-    public Todo findTodoBy(Long id) {
-        return Todo.from(todoJpaRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException("선택한 일정은 존재하지 않습니다.")
-        ));
-    }
+    Todo findTodoBy(Long id);
 
-    public void save(TodoEntity todoEntity) {
-        todoJpaRepository.save(todoEntity);
-    }
+    void save(TodoEntity todoEntity);
 
-    public void delete(Todo todo) {
-        todoJpaRepository.delete(todo.toEntity());
-    }
+    void delete(Todo todo);
 
-    public void update(Todo todo) {
-        todoJpaRepository.saveAndFlush(todo.toEntity());
-    }
+    void update(Todo todo);
 }

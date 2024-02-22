@@ -23,7 +23,6 @@ public class MockUserRepository implements UserRepository {
             .map(User::from)
             .findAny()
             .orElseThrow(NoSuchElementException::new);
-
     }
 
     @Override
@@ -46,6 +45,8 @@ public class MockUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return store.values().stream()
+            .map(User::from)
+            .toList();
     }
 }
