@@ -1,12 +1,9 @@
 package com.sparta.todo.domain.user.model;
 
-import com.sparta.todo.domain.todo.query.dto.GetTodoListResponseDto;
-import com.sparta.todo.domain.todo.query.dto.GetTodoResponseDto;
 import com.sparta.todo.domain.todo.model.TodoEntity;
 import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.jwt.JwtUtil;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
@@ -46,16 +43,6 @@ public class User {
 
     public String createToken(JwtUtil jwtUtil) {
         return jwtUtil.createToken(userName);
-    }
-
-    public static GetTodoListResponseDto todoList(User user) {
-        return new GetTodoListResponseDto(
-            user.userName,
-            user.todoEntities.stream()
-            .sorted(Comparator.comparing(TodoEntity::getDateCreated).reversed())
-            .map(GetTodoResponseDto::new)
-            .toList()
-        );
     }
 
     public Todo getTodoBy(Long id) {

@@ -6,7 +6,6 @@ import static com.sparta.todo.global.message.TodoMessage.SEARCH_TODOS_API;
 import static com.sparta.todo.global.message.TodoMessage.SEARCH_TODOS_DESCRIPTION;
 import static com.sparta.todo.global.message.TodoMessage.SEARCH_TODOS_SUCCESS;
 
-import com.sparta.todo.domain.todo.query.dto.GetTodoListResponseDto;
 import com.sparta.todo.domain.todo.query.dto.GetTodoResponseDto;
 import com.sparta.todo.domain.todo.query.service.TodoQueryServiceImpl;
 import com.sparta.todo.global.commonDto.ResponseDto;

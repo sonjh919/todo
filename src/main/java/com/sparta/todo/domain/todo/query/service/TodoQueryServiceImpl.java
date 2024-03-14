@@ -2,7 +2,6 @@ package com.sparta.todo.domain.todo.query.service;
 
 import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.todo.model.TodoEntity;
-import com.sparta.todo.domain.todo.query.dto.GetTodoListResponseDto;
 import com.sparta.todo.domain.todo.query.dto.GetTodoResponseDto;
 import com.sparta.todo.domain.todo.query.repository.TodoQueryRepository;
 import java.util.List;
