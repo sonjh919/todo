@@ -9,7 +9,7 @@ import static com.sparta.todo.global.message.TodoMessage.PATCH_TODO_SUCCESS;
 
 import com.sparta.todo.domain.todo.command.dto.TodoRequestDto;
 import com.sparta.todo.domain.todo.command.dto.TodoResponseDto;
-import com.sparta.todo.domain.todo.command.service.TodoService;
+import com.sparta.todo.domain.todo.command.TodoService;
 import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;

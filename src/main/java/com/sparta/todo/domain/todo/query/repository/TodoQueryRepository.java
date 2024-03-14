@@ -7,7 +7,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.todo.model.TodoEntity;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

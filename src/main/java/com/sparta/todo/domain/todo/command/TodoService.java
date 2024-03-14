@@ -1,4 +1,4 @@
-package com.sparta.todo.domain.todo.command.service;
+package com.sparta.todo.domain.todo.command;
 
 import com.sparta.todo.domain.todo.command.dto.TodoRequestDto;
 import com.sparta.todo.domain.todo.command.dto.TodoResponseDto;
