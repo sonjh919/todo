@@ -1,6 +1,6 @@
-package com.sparta.todo.domain.todo.entity;
+package com.sparta.todo.domain.todo.model;
 
-import com.sparta.todo.domain.todo.dto.TodoRequestDto;
+import com.sparta.todo.domain.todo.command.dto.TodoRequestDto;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

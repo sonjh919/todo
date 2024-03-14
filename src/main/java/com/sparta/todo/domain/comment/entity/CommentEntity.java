@@ -1,7 +1,7 @@
 package com.sparta.todo.domain.comment.entity;
 
 import com.sparta.todo.domain.comment.dto.CommentRequestDto;
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.TodoEntity;
 import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.domain.user.model.User;

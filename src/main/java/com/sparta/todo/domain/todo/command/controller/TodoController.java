@@ -1,33 +1,24 @@
-package com.sparta.todo.domain.todo.controller;
+package com.sparta.todo.domain.todo.command.controller;
 
 import static com.sparta.todo.global.message.TodoMessage.CREATE_TODO_API;
 import static com.sparta.todo.global.message.TodoMessage.CREATE_TODO_SUCCESS;
 import static com.sparta.todo.global.message.TodoMessage.DELETE_TODO_API;
-import static com.sparta.todo.global.message.TodoMessage.GET_TODO_API;
-import static com.sparta.todo.global.message.TodoMessage.GET_TODO_SUCCESS;
 import static com.sparta.todo.global.message.TodoMessage.PATCH_TODO_API;
 import static com.sparta.todo.global.message.TodoMessage.PATCH_TODO_DESCRIPTION;
 import static com.sparta.todo.global.message.TodoMessage.PATCH_TODO_SUCCESS;
-import static com.sparta.todo.global.message.TodoMessage.SEARCH_TODOS_API;
-import static com.sparta.todo.global.message.TodoMessage.SEARCH_TODOS_DESCRIPTION;
-import static com.sparta.todo.global.message.TodoMessage.SEARCH_TODOS_SUCCESS;
 
-import com.sparta.todo.domain.todo.dto.GetTodoListResponseDto;
-import com.sparta.todo.domain.todo.dto.GetTodoResponseDto;
-import com.sparta.todo.domain.todo.dto.TodoRequestDto;
-import com.sparta.todo.domain.todo.dto.TodoResponseDto;
-import com.sparta.todo.domain.todo.service.TodoService;
+import com.sparta.todo.domain.todo.command.dto.TodoRequestDto;
+import com.sparta.todo.domain.todo.command.dto.TodoResponseDto;
+import com.sparta.todo.domain.todo.command.service.TodoService;
 import com.sparta.todo.domain.user.model.User;
 import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,29 +47,6 @@ public class TodoController {
             .body(ResponseDto.<TodoResponseDto>builder()
                 .message(CREATE_TODO_SUCCESS)
                 .data(todoResponseDto)
-                .build());
-    }
-
-    @GetMapping("v2/todos/{id}")
-    @Operation(summary = GET_TODO_API)
-    public ResponseEntity<ResponseDto<GetTodoResponseDto>> getTodoById(@PathVariable Long id) {
-
-        return ResponseEntity.ok()
-            .body(ResponseDto.<GetTodoResponseDto>builder()
-                .message(GET_TODO_SUCCESS)
-                .data(todoService.getTodoById(id))
-                .build());
-    }
-
-    @GetMapping("v2/todos")
-    @Operation(summary = SEARCH_TODOS_API, description = SEARCH_TODOS_DESCRIPTION)
-    public ResponseEntity<ResponseDto<List<GetTodoListResponseDto>>> getTodos(
-        @RequestParam(required = false) String title) {
-
-        return ResponseEntity.ok()
-            .body(ResponseDto.<List<GetTodoListResponseDto>>builder()
-                .message(SEARCH_TODOS_SUCCESS)
-                .data(todoService.getTodos(title))
                 .build());
     }
 

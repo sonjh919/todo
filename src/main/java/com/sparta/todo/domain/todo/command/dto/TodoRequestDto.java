@@ -1,4 +1,4 @@
-package com.sparta.todo.domain.todo.dto;
+package com.sparta.todo.domain.todo.command.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

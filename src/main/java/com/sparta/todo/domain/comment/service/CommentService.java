@@ -6,7 +6,7 @@ import com.sparta.todo.domain.comment.entity.CommentEntity;
 import com.sparta.todo.domain.comment.model.Comment;
 import com.sparta.todo.domain.comment.repository.CommentRepository;
 import com.sparta.todo.domain.todo.model.Todo;
-import com.sparta.todo.domain.todo.repository.TodoRepository;
+import com.sparta.todo.domain.todo.command.repository.TodoRepository;
 import com.sparta.todo.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

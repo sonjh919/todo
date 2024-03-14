@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GetTimeAop {
 
-    @Pointcut("execution(* com.sparta.todo.domain.*.controller.*.get*(..))")
+    @Pointcut("execution(* com.sparta.todo.domain.*.query.controller.*.get*(..))")
     private void getMethods() {}
 
     @Around("getMethods()")

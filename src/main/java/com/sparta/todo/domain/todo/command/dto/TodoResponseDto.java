@@ -1,4 +1,4 @@
-package com.sparta.todo.domain.todo.dto;
+package com.sparta.todo.domain.todo.command.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

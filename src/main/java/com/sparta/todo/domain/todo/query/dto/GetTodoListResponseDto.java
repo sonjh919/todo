@@ -1,4 +1,4 @@
-package com.sparta.todo.domain.todo.dto;
+package com.sparta.todo.domain.todo.query.dto;
 
 import java.util.List;
 import lombok.Getter;

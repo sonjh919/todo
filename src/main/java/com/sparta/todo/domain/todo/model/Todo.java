@@ -1,9 +1,8 @@
 package com.sparta.todo.domain.todo.model;
 
-import com.sparta.todo.domain.todo.dto.GetTodoResponseDto;
-import com.sparta.todo.domain.todo.dto.TodoRequestDto;
-import com.sparta.todo.domain.todo.dto.TodoResponseDto;
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.query.dto.GetTodoResponseDto;
+import com.sparta.todo.domain.todo.command.dto.TodoRequestDto;
+import com.sparta.todo.domain.todo.command.dto.TodoResponseDto;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

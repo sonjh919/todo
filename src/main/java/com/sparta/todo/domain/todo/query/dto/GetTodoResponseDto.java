@@ -1,6 +1,6 @@
-package com.sparta.todo.domain.todo.dto;
+package com.sparta.todo.domain.todo.query.dto;
 
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.TodoEntity;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

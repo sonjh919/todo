@@ -1,6 +1,6 @@
-package com.sparta.todo.domain.todo.repository;
+package com.sparta.todo.domain.todo.command.repository;
 
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.TodoEntity;
 import com.sparta.todo.domain.todo.model.Todo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

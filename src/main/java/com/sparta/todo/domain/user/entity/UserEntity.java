@@ -1,6 +1,6 @@
 package com.sparta.todo.domain.user.entity;
 
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.TodoEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

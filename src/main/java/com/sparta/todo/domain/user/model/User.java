@@ -1,8 +1,8 @@
 package com.sparta.todo.domain.user.model;
 
-import com.sparta.todo.domain.todo.dto.GetTodoListResponseDto;
-import com.sparta.todo.domain.todo.dto.GetTodoResponseDto;
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.query.dto.GetTodoListResponseDto;
+import com.sparta.todo.domain.todo.query.dto.GetTodoResponseDto;
+import com.sparta.todo.domain.todo.model.TodoEntity;
 import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.user.entity.UserEntity;
 import com.sparta.todo.global.jwt.JwtUtil;

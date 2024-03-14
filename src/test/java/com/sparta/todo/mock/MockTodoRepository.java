@@ -1,8 +1,8 @@
 package com.sparta.todo.mock;
 
-import com.sparta.todo.domain.todo.entity.TodoEntity;
+import com.sparta.todo.domain.todo.model.TodoEntity;
 import com.sparta.todo.domain.todo.model.Todo;
-import com.sparta.todo.domain.todo.repository.TodoRepository;
+import com.sparta.todo.domain.todo.command.repository.TodoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
