@@ -22,8 +22,7 @@ public class GetTimeAop {
         long startTime = System.currentTimeMillis();
 
         try {
-            Object output = joinPoint.proceed();
-            return output;
+            return joinPoint.proceed();
         } finally {
             long endTime = System.currentTimeMillis();
             long runTime = endTime - startTime;

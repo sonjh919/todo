@@ -25,26 +25,11 @@ public class TodoQueryRepository {
             ).fetchFirst());
     }
 
-//    public List<TodoEntity> findByTitle(String title) {
-//        return jpaQueryFactory
-//            .selectFrom(todoEntity)
-//            .where(todoTitleEq(title))
-//            .orderBy(todoEntity.userEntity.userId.asc())
-//            .fetch();
-//    }
-//
-//    private BooleanExpression todoTitleEq(String title){
-//        if(title==null){
-//            return null;
-//        }
-//        return todoEntity.title.eq(title);
-//    }
-
     public Page<TodoEntity> findByTitle(String title, Pageable pageable){
          List<TodoEntity> todoEntities = jpaQueryFactory
             .selectFrom(todoEntity)
             .where(todoTitleEq(title))
-            .orderBy(todoEntity.userEntity.userId.asc())
+            .orderBy(todoEntity.todoId.asc())
              .offset(pageable.getOffset())
              .limit(pageable.getPageSize())
              .fetch();
