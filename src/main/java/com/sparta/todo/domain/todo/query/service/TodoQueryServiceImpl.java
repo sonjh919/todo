@@ -7,6 +7,9 @@ import com.sparta.todo.domain.todo.query.repository.TodoQueryRepository;
 import com.sparta.todo.domain.todo.query.service.TodoQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +26,8 @@ public class TodoQueryServiceImpl implements TodoQueryService {
     }
 
     @Override
-    public List<GetTodoResponseDto> getTodos(String title) {
-        List<TodoEntity> todoEntities = todoQueryRepository.findByTitle(title);
+    public List<GetTodoResponseDto> getTodos(String title, Pageable pageable) {
+        Page<TodoEntity> todoEntities = todoQueryRepository.findByTitle(title, pageable);
         return todoEntities.stream().map(GetTodoResponseDto::new).toList();
     }
 }

@@ -3,18 +3,14 @@ package com.sparta.todo.domain.todo.command.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
 
 import com.sparta.todo.domain.fixture.TestTodo;
 import com.sparta.todo.domain.fixture.TestUser;
 import com.sparta.todo.domain.todo.command.TodoService;
-import com.sparta.todo.domain.todo.query.service.TodoQueryServiceImpl;
-import com.sparta.todo.domain.todo.query.dto.GetTodoResponseDto;
 import com.sparta.todo.domain.todo.command.dto.TodoRequestDto;
 import com.sparta.todo.domain.todo.command.dto.TodoResponseDto;
 import com.sparta.todo.domain.todo.command.repository.TodoRepository;
 import com.sparta.todo.mock.MockTodoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;

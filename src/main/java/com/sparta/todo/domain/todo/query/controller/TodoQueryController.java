@@ -12,6 +12,7 @@ import com.sparta.todo.global.commonDto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,12 +37,14 @@ public class TodoQueryController {
     @GetMapping("v2/todos")
     @Operation(summary = SEARCH_TODOS_API, description = SEARCH_TODOS_DESCRIPTION)
     public ResponseEntity<ResponseDto<List<GetTodoResponseDto>>> getTodos(
-        @RequestParam(required = false) String title) {
+        @RequestParam(required = false) String title,
+        Pageable pageable
+    ) {
 
         return ResponseEntity.ok()
             .body(ResponseDto.<List<GetTodoResponseDto>>builder()
                 .message(SEARCH_TODOS_SUCCESS)
-                .data(getTodoService.getTodos(title))
+                .data(getTodoService.getTodos(title, pageable))
                 .build());
     }
 }

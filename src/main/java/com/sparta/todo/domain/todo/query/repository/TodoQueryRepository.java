@@ -8,6 +8,9 @@ import com.sparta.todo.domain.todo.model.Todo;
 import com.sparta.todo.domain.todo.model.TodoEntity;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -22,12 +25,31 @@ public class TodoQueryRepository {
             ).fetchFirst());
     }
 
-    public List<TodoEntity> findByTitle(String title) {
-        return jpaQueryFactory
+//    public List<TodoEntity> findByTitle(String title) {
+//        return jpaQueryFactory
+//            .selectFrom(todoEntity)
+//            .where(todoTitleEq(title))
+//            .orderBy(todoEntity.userEntity.userId.asc())
+//            .fetch();
+//    }
+//
+//    private BooleanExpression todoTitleEq(String title){
+//        if(title==null){
+//            return null;
+//        }
+//        return todoEntity.title.eq(title);
+//    }
+
+    public Page<TodoEntity> findByTitle(String title, Pageable pageable){
+         List<TodoEntity> todoEntities = jpaQueryFactory
             .selectFrom(todoEntity)
             .where(todoTitleEq(title))
             .orderBy(todoEntity.userEntity.userId.asc())
-            .fetch();
+             .offset(pageable.getOffset())
+             .limit(pageable.getPageSize())
+             .fetch();
+
+        return new PageImpl<>(todoEntities, pageable, todoEntities.size());
     }
 
     private BooleanExpression todoTitleEq(String title){
